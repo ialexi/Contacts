@@ -15,7 +15,9 @@ Contacts.Contact.FIXTURES = [
 		"address": "5544 S 104 East Avenue\nThe Loud Room",
 		"city": "Tulsa",
 		"state": "OK",
-		"zip": "74146"
+		"zip": "74146",
+		"email": "alex@alex.alex",
+		"phone": "(123) 456-7890"
 	},
 	{
 		"guid": 2,
@@ -25,7 +27,8 @@ Contacts.Contact.FIXTURES = [
 		"address": "5544 S 104 East Avenue\nThe Loud Room",
 		"city": "Tulsa",
 		"state": "OK",
-		"zip": "74146"
+		"zip": "74146",
+		"email": "da-fado@no-where.com"
 	},
 	{
 		"guid": 3,

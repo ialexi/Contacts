@@ -18,6 +18,10 @@
 	padding: 7px;
 }
 
+.sc-view.csz .sc-label-view {
+	padding: 3px;
+}
+
 .form-row-label {
 	color:#777; font-weight:bold !important;
 }
