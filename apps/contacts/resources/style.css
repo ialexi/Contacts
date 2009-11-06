@@ -13,6 +13,10 @@
 	border: auto;
 }
 
+.sc-view.name .sc-text-field-view input {
+	font-size:30px;
+}
+
 .sc-view.name .sc-label-view {
 	font-size:30px;
 	padding: 7px;

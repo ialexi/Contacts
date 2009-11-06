@@ -3,7 +3,7 @@
 // Copyright: ©2009 My Company, Inc.
 // ==========================================================================
 /*globals Contacts */
-require("views/contact")
+require("views/contact");
 // This page describes the main user interface for your application.  
 Contacts.mainPage = SC.Page.design({
 
@@ -44,12 +44,64 @@ Contacts.mainPage = SC.Page.design({
 				}),
 				
 				// contact view
-				bottomRightView: SC.View.extend({
+				bottomRightView: SC.View.design({
 					backgroundColor: "#555",
-					childViews: 'contactView'.w(),
+					childViews: 'contactView toolbar'.w(),
 					contactView: Contacts.ContactView.design({
-						layout: { left: 15, right: 15, bottom: 15, top: 15 },
+						layout: { left: 15, right: 15, bottom: 47, top: 15 },
 						contentBinding: "Contacts.contactsController.selection"
+					}),
+					
+					beginEditing: function()
+					{
+						console.error("Hi");
+					},
+					
+					toolbar: SC.ToolbarView.design({
+						layout: { left:0, right:0, bottom:0, height:32 },
+						childViews: "edit save".w(),
+						edit: SC.ButtonView.design(Animate.Animatable, {
+							transitions: {
+								opacity: 0.25
+							},
+							title: "Edit",
+							layout: { left: 10, centerY: 0, height:24, width: 90 },
+							target: Contacts.contactController,
+							action: "beginEditing",
+							style: { opacity: 1 }
+						}),
+						save: SC.ButtonView.design(Animate.Animatable, {
+							transitions: { opacity: 0.25 },
+							title: "Save",
+							layout: { left: 110, centerY: 0, height: 24, width: 90 },
+							target: Contacts.contactController,
+							action: "endEditing",
+							style: {
+								opacity: 0
+							}
+						}),
+						
+						controllerIsEditing: NO,
+						controllerIsEditingBinding: "Contacts.contactController.isEditing",
+						controllerIsEditingDidChange: function()
+						{
+							var save = this.get("save");
+							var edit = this.get("edit");
+							
+							
+							if (save.isClass) return;
+							
+							if (this.get("controllerIsEditing"))
+							{
+								save.adjust("opacity", 1).updateLayout();
+								edit.adjust("opacity", 0).updateLayout();
+							}
+							else
+							{
+								save.adjust("opacity", 0);
+								edit.adjust("opacity", 1);
+							}
+						}.observes("controllerIsEditing")
 					})
 				})
 			})

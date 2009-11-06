@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   Contacts.ContactView
-// Copyright: ©2009 My Company, Inc.
+// Copyright: ©2009 Alex Iskander and TPSi
 // ==========================================================================
 /*globals Contacts */
 
@@ -33,7 +33,7 @@ Contacts.ContactView = SC.View.extend(
 			//fieldLabel: NO, // I LIKE HINTS DARNIT
 			hint: "company",
 			fieldKey: "company",
-			fieldLabel: "company"
+			fieldLabel: "company company company company company company company company "
 		}),
 	
 		address: Forms.FormView.row(SC.TextFieldView, {
