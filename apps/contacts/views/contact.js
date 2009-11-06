@@ -25,7 +25,7 @@ Contacts.ContactView = SC.View.extend(
 			fields: 'firstName lastName'.w(),
 			fieldLabel: NO,
 			// and I kinda should test fieldLabel: NO
-			firstName: Forms.FormView.field(SC.TextFieldView, { hint: "first", classNames: ["name"], layout: { height: 35, width: 200 } }),
+			firstName: Forms.FormView.field(SC.TextFieldView, { stealsFocus: YES, hint: "first", classNames: ["name"], layout: { height: 35, width: 200 } }),
 			lastName: Forms.FormView.field(SC.TextFieldView, { hint: "last", classNames: ["name"], layout: { height: 35, width: 200 } })
 		}),
 	
@@ -33,7 +33,7 @@ Contacts.ContactView = SC.View.extend(
 			//fieldLabel: NO, // I LIKE HINTS DARNIT
 			hint: "company",
 			fieldKey: "company",
-			fieldLabel: "company company company company company company company company "
+			fieldLabel: "company"
 		}),
 	
 		address: Forms.FormView.row(SC.TextFieldView, {
