@@ -13,9 +13,8 @@
 	border: auto;
 }
 
-.sc-view.name .sc-text-field-view input {
-	font-size:30px;
-	white-space:pre-wrap;
+.sc-view.name .sc-text-field-view input, .sc-view.name .sc-text-field-view .sc-hint {
+	font-size:25px;
 }
 
 .sc-view.name .sc-label-view {

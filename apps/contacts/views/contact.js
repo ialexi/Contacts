@@ -68,35 +68,6 @@ Contacts.ContactView = SC.View.extend(
 		
 	
 		/* This stuff goes at the end because it is entirely to test animation. So there. */
-		index: 0,
-	
-		init: function()
-		{
-			sc_super();
-		
-			SC.Timer.schedule({
-				target: this,
-				action: function()
-				{
-					this.index++;
-					if (this.index % 2 == 0)
-					{
-						var f = this.get("fields");
-						var v = f.shift();
-						f.push(v);
-						this.notifyPropertyChange("fields");
-					}
-					else
-					{
-						for (var i = 0; i < this.childViews.length; i++)
-						{
-						//	this.childViews[i].adjust("height", Math.random() * 50 + 70);
-						}
-					}
-				},
-				interval: 1500,
-				repeats: YES
-			});
-		}
+		index: 0
 	})
 });
