@@ -17,6 +17,7 @@ Contacts.ContactView = SC.View.extend(
 	backgroundColor: "white",
 	contentBindingDefault: SC.Binding.single(),
 	form: Forms.FormView.design(Forms.FormAnimation, {
+		editsByDefault: NO,
 		layout: { left: 20, top: 20, right: 20, bottom: 20 },
 		contentBinding: ".parentView.content",
 		fields: "name company address csz phone email".w(),
@@ -26,14 +27,18 @@ Contacts.ContactView = SC.View.extend(
 			fieldLabel: NO,
 			// and I kinda should test fieldLabel: NO
 			firstName: Forms.FormView.field(SC.TextFieldView, { stealsFocus: YES, hint: "first", classNames: ["name"], layout: { height: 35, width: 200 } }),
-			lastName: Forms.FormView.field(SC.TextFieldView, { hint: "last", classNames: ["name"], layout: { height: 35, width: 200 } })
+			lastName: Forms.FormView.field(SC.TextFieldView, { hint: "last", classNames: ["name"], layout: { height: 35, width: 200 } }),
+			
+			autoHide: YES
 		}),
 	
 		company: Forms.FormView.row(SC.TextFieldView, {
 			//fieldLabel: NO, // I LIKE HINTS DARNIT
 			hint: "company",
 			fieldKey: "company",
-			fieldLabel: "company"
+			fieldLabel: "company",
+			
+			autoHide: YES
 		}),
 	
 		address: Forms.FormView.row(SC.TextFieldView, {
@@ -41,7 +46,9 @@ Contacts.ContactView = SC.View.extend(
 			fieldKey: "address", // redundant
 			hint: "address",
 			isTextArea: YES,
-			layout: { width: 300, height: 100 }
+			layout: { width: 300, height: 100 },
+			
+			autoHide: YES
 		}),
 		
 		csz: Forms.FormView.row({
@@ -52,18 +59,24 @@ Contacts.ContactView = SC.View.extend(
 			city: Forms.FormView.field(SC.TextFieldView, { hint: "city", classNames: ["csz"], layout: { height: 35, width: 200 } }),
 			state: Forms.FormView.field(SC.TextFieldView, { hint: "state", classNames: ["csz"], layout: { height: 35, width: 200 } }),
 			zip: Forms.FormView.field(SC.TextFieldView, { hint: "zip", classNames: ["csz"], layout: { height: 35, width: 200 } }),
+			
+			autoHide: YES
 		}),
 		
 		phone: Forms.FormView.row(SC.TextFieldView, {
 			hint: "phone",
 			fieldKey: "phone",
-			fieldLabel: "phone"
+			fieldLabel: "phone",
+			
+			autoHide: YES
 		}),
 		
 		email: Forms.FormView.row(SC.TextFieldView, {
 			hint: "email",
 			fieldKey: "email",
-			fieldLabel: "email"
+			fieldLabel: "email",
+			
+			autoHide: YES
 		}),
 		
 	

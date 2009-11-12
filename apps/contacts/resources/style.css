@@ -8,10 +8,38 @@
 	border: 0px none;
 }
 
-.contact-view .sc-text-field-view .border:focus {
-	-webkit-appearance: textfield;
-	border: auto;
+.msie .contact-view .sc-text-field-view { border: 0px solid transparent; outline: 0px none }
+.msie .contact-view .sc-text-field-view.focus { border: 0px solid gray; outline: 0px none; }
+.msie .contact-view .sc-text-field-view .padding { border: 1px solid transparent; outline: 0px none; left: 0px; right:0px;}
+.msie .contact-view .sc-text-field-view.focus .padding { background-color:white; border: 1px solid gray; outline: 0px none; }
+
+.contact-view .sc-text-field-view.focus { border: 0px none; outline: 0px none; z-index:5000;}
+
+.sc-view .sc-text-field-view .border, 
+.msie .contact-view .sc-text-field-view .border { border: 1px solid transparent; }
+
+.sc-view .sc-text-field-view.focus .border,
+.msie .sc-view .sc-text-field-view.focus .border { 
+	outline:0px none; 
+	border: 1px solid #888;
+	-moz-box-shadow: 3px 3px 5px gray; 
+	-webkit-box-shadow: 3px 3px 5px gray;
+	
+	background: white;
 }
+
+.msie .sc-view .sc-text-field-view.focus .border { 
+	border: 0px none;
+	background-color:gray;
+	filter:progid:DXImageTransform.Microsoft.dropShadow(color=gray, offX=1, offY = 1)
+	progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
+	-ms-filter:progid:DXImageTransform.Microsoft.dropShadow(color=gray, offX=1, offY = 1)
+	progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
+}
+
+.safari .sc-view .sc-text-field-view.focus {outline:0px none;}
+.mozilla .sc-view .sc-text-field-view.focus {outline:0px none;}
+
 
 .sc-view.name .sc-text-field-view input, .sc-view.name .sc-text-field-view .sc-hint {
 	font-size:25px;
