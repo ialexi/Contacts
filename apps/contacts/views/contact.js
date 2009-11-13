@@ -20,7 +20,7 @@ Contacts.ContactView = SC.View.extend(
 		editsByDefault: NO,
 		layout: { left: 20, top: 20, right: 20, bottom: 20 },
 		contentBinding: ".parentView.content",
-		fields: "name company address csz phone email".w(),
+		fields: "name active company relationship address csz phone email".w(),
 	
 		name: Forms.FormView.row({
 			fields: 'firstName lastName'.w(),
@@ -79,6 +79,29 @@ Contacts.ContactView = SC.View.extend(
 			autoHide: YES
 		}),
 		
+		active: Forms.FormView.row(SC.CheckboxView, {
+			title: "Active",
+			fieldLabel: NO,
+			fieldKey: "active",
+			
+			emptyValues: [YES],
+			autoHide: YES,
+			value: YES
+		}),
+		
+		relationship: Forms.FormView.row(SC.RadioView, {
+			items: [ 
+				{ value: "customer", title: "Customer" },
+				{ value: "former-customer", title: "Former Customer" },
+				{ value: "friend", title: "Friend" },
+				{ value: "enemy", title: "Enemy" }
+			],
+			itemValueKey: "value",
+			itemTitleKey: "title",
+			fieldKey: "relationship",
+			fieldLabel: "relationship",
+			autoHide: YES
+		}),
 	
 		/* This stuff goes at the end because it is entirely to test animation. So there. */
 		index: 0

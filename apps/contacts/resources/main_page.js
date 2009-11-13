@@ -73,11 +73,11 @@ Contacts.mainPage = SC.Page.design({
 						save: SC.ButtonView.design(Animate.Animatable, {
 							transitions: { opacity: 0.25 },
 							title: "Save",
-							layout: { left: 110, centerY: 0, height: 24, width: 90 },
+							layout: { left: 10, centerY: 0, height: 24, width: 90 },
 							target: Contacts.contactController,
 							action: "endEditing",
 							style: {
-								opacity: 0
+								opacity: 0, display: "none"
 							}
 						}),
 						
@@ -93,13 +93,21 @@ Contacts.mainPage = SC.Page.design({
 							
 							if (this.get("controllerIsEditing"))
 							{
-								save.adjust("opacity", 1).updateLayout();
-								edit.adjust("opacity", 0).updateLayout();
+								save.adjust({
+									opacity: 1, display: "block"
+								}).updateLayout();
+								edit.adjust({
+									opacity: 1, display: "none"
+								}).updateLayout();
 							}
 							else
 							{
-								save.adjust("opacity", 0);
-								edit.adjust("opacity", 1);
+								edit.adjust({
+									opacity: 1, display: "block"
+								}).updateLayout();
+								save.adjust({
+									opacity: 1, display: "none"
+								}).updateLayout();
 							}
 						}.observes("controllerIsEditing")
 					})

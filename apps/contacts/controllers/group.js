@@ -12,5 +12,5 @@
 Contacts.groupController = SC.Object.create(
 /** @scope Contacts.contactsController.prototype */ {
 	contentBinding: "Contacts.groupsController.selection",
-	contentBindingDefault: SC.Binding.single(),
+	contentBindingDefault: SC.Binding.single()
 }) ;

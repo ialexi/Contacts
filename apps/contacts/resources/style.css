@@ -8,6 +8,9 @@
 	border: 0px none;
 }
 
+.contact-view .sc-text-field-view input { background:transparent; }
+.contact-view .sc-text-field-view textarea { background:transparent; }
+
 .msie .contact-view .sc-text-field-view { border: 0px solid transparent; outline: 0px none }
 .msie .contact-view .sc-text-field-view.focus { border: 0px solid gray; outline: 0px none; }
 .msie .contact-view .sc-text-field-view .padding { border: 1px solid transparent; outline: 0px none; left: 0px; right:0px;}
@@ -41,18 +44,59 @@
 .mozilla .sc-view .sc-text-field-view.focus {outline:0px none;}
 
 
+/* Set font size */
+.sc-view .sc-text-field-view .padding
+{
+	top:3px;
+	bottom:3px;
+}
+
 .sc-view.name .sc-text-field-view input, .sc-view.name .sc-text-field-view .sc-hint {
-	font-size:25px;
-}
-
-.sc-view.name .sc-label-view {
 	font-size:30px;
-	padding: 7px;
 }
 
-.sc-view.csz .sc-label-view {
-	padding: 3px;
+/* Add some spacing between first+last */
+.sc-form-field-view.name { padding-right: 9px; }
+
+/* Try to get labels to line up with their fields */
+.sc-form-field-view.name .sc-label-view {
+	font-size:30px;
+	padding-right: 1px;
+	padding-left:4px;
+	padding-top: 11px; padding-bottom: 4px;
 }
+
+
+.sc-form-field-view .sc-label-view {
+	padding-top:0px;
+	padding-left:4px;
+}
+
+/* Mozilla needs something special for this (1px off vertically) */
+.mozilla .sc-form-field-view.name .sc-label-view {
+	padding-top:12px;
+}
+
+/* And IE something completely different */
+.msie .sc-form-field-view.name .sc-label-view {
+	padding-left:2px;
+	padding-top: 10px;
+}
+
+.msie .sc-form-field-view .sc-text-field-view input
+{
+	line-height:1em;
+}
+
+/* oddly, windows is different */
+.safari.windows .sc-form-field-view.name .sc-label-view {
+	padding-top: 10px;
+}
+
+.mozilla.windows .sc-form-field-view.name .sc-label-view {
+	padding-top: 11px;
+}
+
 
 .form-row-label {
 	color:#777; font-weight:bold !important;

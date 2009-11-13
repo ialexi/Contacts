@@ -21,8 +21,7 @@ Contacts.Contact = SC.Record.extend(
 	{
 		var val = this.get("firstName") + " " + this.get("lastName");
 		val = val.trim();
-		if (val == "")
-			val = this.get("company");
+		if (val === "") val = this.get("company");
 		
 		return val;
 	}.property('firstName', 'lastName', 'company').cacheable(),
@@ -40,5 +39,5 @@ Contacts.Contact = SC.Record.extend(
 	
 	groups: SC.Record.toMany("Contacts.Group", {
 		inverse: "contacts", isMaster: NO
-	}),
+	})
 }) ;
