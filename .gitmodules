@@ -1,12 +1,6 @@
-[submodule "frameworks/sproutcore"]
-	path = frameworks/sproutcore
-	url = git://github.com/sproutit/sproutcore.git
 [submodule "frameworks/animate"]
 	path = frameworks/animate
 	url = git://github.com/ialexi/animate.git
-[submodule "sproutcore"]
-	path = sproutcore
-	url = /Users/alexiskander/Documents/Work/Clients/TPSi/Projects/os/contacts/frameworks/sproutcore/.git
 [submodule "frameworks/forms"]
 	path = frameworks/forms
 	url = git://github.com/ialexi/Forms.git
