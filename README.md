@@ -22,6 +22,7 @@ To download:
 
 To set up the sample database:
 		> cd server/djangoserver
+		> python manage.py syncdb
 		> python load_default_data.py
 
 To run:

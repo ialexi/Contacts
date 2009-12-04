@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'djangoserver.urls'
 
 INSTALLED_APPS = (
-   	'django.contrib.auth',
+#   	'django.contrib.auth',	# No auth for now...
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.sites',
