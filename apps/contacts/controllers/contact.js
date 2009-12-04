@@ -20,12 +20,13 @@ Contacts.contactController = SC.Object.create(
 	beginEditing: function()
 	{
 		this.set("isEditing", YES);
-		Contacts.mainPage.getPath("mainPane.splitter.bottomRightView.bottomRightView.contactView.form").beginEditing();
+		Contacts.mainPage.getPath("mainPane.splitter.bottomRightView.bottomRightView.contactView.contentView.form").beginEditing();
 	},
 	
 	endEditing: function()
 	{
 		this.set("isEditing", NO);
-		Contacts.mainPage.getPath("mainPane.splitter.bottomRightView.bottomRightView.contactView.form").commitEditing();
+		Contacts.mainPage.getPath("mainPane.splitter.bottomRightView.bottomRightView.contactView.contentView.form").commitEditing();
+		Contacts.store.commitRecords();
 	}
 }) ;

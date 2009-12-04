@@ -1,0 +1,13 @@
+.toolbar {
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#8F8F8F));
+	z-index:500;
+	-webkit-box-shadow: 0px 0px 2px black;
+}
+
+.contact-panel {
+	-webkit-box-shadow: 0px 0px 10px black;
+	color:black;
+}
+
+.sc-split-divider-view { background-color:#999; }
+.sc-split-divider-view { border:0px none; }

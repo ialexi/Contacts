@@ -10,3 +10,9 @@
 [submodule "frameworks/forms"]
 	path = frameworks/forms
 	url = git://github.com/ialexi/Forms.git
+[submodule "frameworks/pomona"]
+	path = frameworks/pomona
+	url = git://github.com/ialexi/pomona.git
+[submodule "server/djangoserver/cornelius"]
+	path = server/djangoserver/cornelius
+	url = git://github.com/ialexi/cornelius.git

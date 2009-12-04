@@ -2,7 +2,7 @@
 // Project:   Contacts - mainPage
 // Copyright: ©2009 My Company, Inc.
 // ==========================================================================
-/*globals Contacts */
+/*globals Contacts Animate */
 require("views/contact");
 // This page describes the main user interface for your application.  
 Contacts.mainPage = SC.Page.design({
@@ -13,6 +13,7 @@ Contacts.mainPage = SC.Page.design({
 	mainPane: SC.MainPane.design({
 		childViews: 'toolbar splitter'.w(),
 		toolbar: SC.ToolbarView.design({
+		  classNames: ["toolbar"],
 			layout: { left: 0, top: 0, right: 0, height: 32 }
 		}),
 		
@@ -23,11 +24,19 @@ Contacts.mainPage = SC.Page.design({
 			dividerThickness: 1,
 			// companies
 			topLeftView: SC.ScrollView.design({
+				borderStyle: SC.BORDER_NONE,
 				hasHorizontalScroller: NO,
 				contentView: SC.ListView.design({
 					contentBinding: "Contacts.groupsController.arrangedObjects",
 					selectionBinding: "Contacts.groupsController.selection",
-					contentValueKey: "name"
+					contentValueKey: "name",
+					canEditContent: YES,
+					exampleView: SC.ListItemView.design({
+						inlineEditorDidEndEditing: function() {
+							sc_super();
+							Contacts.store.commitRecords();
+						}
+					})
 				})
 			}),
 			
@@ -36,10 +45,46 @@ Contacts.mainPage = SC.Page.design({
 				defaultThickness: 200,
 				dividerThickness: 1,
 				topLeftView: SC.ScrollView.design({
+					borderStyle: SC.BORDER_NONE,
 					contentView: SC.ListView.design({
 						contentBinding: "Contacts.contactsController.arrangedObjects",
 						selectionBinding: "Contacts.contactsController.selection",
-						contentValueKey: "fullName"
+						contentValueKey: "fullName",
+						exampleView: SC.ListItemView.design({
+							/*renderLabel: function(context, label) {
+								if (label === undefined || label === 'undefined') label = "Loading...";
+								this._cachedLabel = label;
+								return arguments.callee.base.call(this, context, label);
+							},
+							mouseDown: function(evt){
+								sc_super();
+								var dv = SC.LabelView.create({
+									layout: {
+										height: this.get('layout').height,
+										width: 100
+									},
+
+									value: this._cachedLabel
+								}).createLayer();
+
+								// initiate the drag
+								SC.Drag.start({
+									event: evt,
+									source: this,
+									dragView: dv,
+									ghost: YES,
+									ghostActsLikeCursor: YES,
+									slideBack: YES,
+									dataSource: this
+								});
+
+								return YES;
+							},
+
+							dragDidEnd: function(drag){
+								//drag.dragView.destroy();
+							}*/
+						})
 					})
 				}),
 				
@@ -47,9 +92,13 @@ Contacts.mainPage = SC.Page.design({
 				bottomRightView: SC.View.design({
 					backgroundColor: "#555",
 					childViews: 'contactView toolbar'.w(),
-					contactView: Contacts.ContactView.design({
+					contactView: SC.ScrollView.design({
+						classNames: ["contact-panel"],
 						layout: { left: 15, right: 15, bottom: 47, top: 15 },
-						contentBinding: "Contacts.contactsController.selection"
+						borderStyle: SC.BORDER_NONE,
+					  	contentView: Contacts.ContactView.design({
+						  contentBinding: "Contacts.contactsController.selection"
+					  })
 					}),
 					
 					beginEditing: function()
