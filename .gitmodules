@@ -13,3 +13,6 @@
 [submodule "server/djangoserver/cornelius"]
 	path = server/djangoserver/cornelius
 	url = git://github.com/ialexi/cornelius.git
+[submodule "server/dobby"]
+	path = server/dobby
+	url = git://github.com/ialexi/dobby.git

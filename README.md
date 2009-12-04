@@ -4,32 +4,34 @@ Contacts.app
 
 It is _very_ work in progress; you can barely count it as functional!
 
-First, you need to get contacts app and Dobby (the comet server):
-		> git clone git://github.com/ialexi/Contacts.git contacts_app
-		> git clone git://github.com/ialexi/dobby.git dobby
+For awhile, you had to actually download two components and start three servers manually.
+Now, as long as you have a few prerequisites, everything should work!
 
-Now, in one Terminal, start Dobby. The default config will work for development,
-*but is likely insecure for production* (if port 8003 is open, everyone can send
-any message to anyone):
-		> cd dobby
-		> python dobby.py
+Prerequisites (that I know of):
+-------------------------------
+* Python 2.6 (or 2.5 w/simplejson)
+* twisted (package for Python)
+* django
+* SproutCore (and all that entails)
 
-Now, in another terminal, let's set up the contacts repository:
-		> cd contacts_app
+To download:
+		> git clone git://github.com/ialexi/Contacts contacts
+		> cd contacts
 		> git submodule init
 		> git submodule update
 
-Now, we need to load default data, and start the Python server:
+To set up the sample database:
 		> cd server/djangoserver
 		> python load_default_data.py
-		> python manage.py runserver
 
-And finally, in yet another terminal (your third), start the SproutCore app:
-		> cd contacts_app
-		> sc-server
+To run:
+		> python server.py
 
-And it should now be running! sc-server is proxying both the Comet server and the
-Django server. You should be able to open up two browser windows to:
+And it should now be running! server.py starts all three servers (sc-server,
+Dobby, and django).
+
+sc-server will proxying both the Comet server and the Django server. 
+You should be able to open up two browser windows to:
 http://localhost:4020/contacts
 
 If you change something in one, the changes should automatically appear in the other.
