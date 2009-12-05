@@ -16,22 +16,20 @@ Prerequisites (that I know of):
 
 To download:
 		> git clone git://github.com/ialexi/Contacts contacts
-		> cd contacts
-		> git submodule init
-		> git submodule update
 
-To set up the sample database:
-		> cd server/djangoserver
-		> python manage.py syncdb
-		> python load_default_data.py
+To initialize all submodules and set up the sample database:
+		> cd contacts
+		> python contacts.py setup
+
+It will show everything it does.
 
 To run:
-		> python server.py
+		> python contacts.py start
 
-And it should now be running! server.py starts all three servers (sc-server,
+And it should now be running! contacts.py starts all three servers (sc-server,
 Dobby, and django).
 
-sc-server will proxying both the Comet server and the Django server. 
+sc-server will proxy both the Comet server and the Django server. 
 You should be able to open up two browser windows to:
 http://localhost:4020/contacts
 
