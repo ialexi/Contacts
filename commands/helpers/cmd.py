@@ -2,6 +2,7 @@ import subprocess
 import sys
 import os, os.path
 import time
+import multiserve
 
 base = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 def setBase(path):
@@ -19,5 +20,6 @@ def run(commands):
 			os.chdir(command)
 		else:
 			print command
-			process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-			print process.communicate()[0]
+			multiserve.run((command,))
+#			process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+#			print process.communicate()[0]
