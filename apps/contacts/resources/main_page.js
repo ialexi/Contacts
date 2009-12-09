@@ -23,19 +23,36 @@ Contacts.mainPage = SC.Page.design({
 			defaultThickness: 200,
 			dividerThickness: 1,
 			// companies
-			topLeftView: SC.ScrollView.design({
-				borderStyle: SC.BORDER_NONE,
-				hasHorizontalScroller: NO,
-				contentView: SC.ListView.design({
-					contentBinding: "Contacts.groupsController.arrangedObjects",
-					selectionBinding: "Contacts.groupsController.selection",
-					contentValueKey: "name",
-					canEditContent: YES,
-					exampleView: SC.ListItemView.design({
-						inlineEditorDidEndEditing: function() {
-							sc_super();
-							Contacts.store.commitRecords();
-						}
+			topLeftView: SC.View.design({
+				childViews: "groupList toolbar".w(),
+				groupList: SC.ScrollView.design({
+					layout: { left:0, right:0, top:0, bottom:32},
+					borderStyle: SC.BORDER_NONE,
+					hasHorizontalScroller: NO,
+					contentView: SC.ListView.design({
+						contentBinding: "Contacts.groupsController.arrangedObjects",
+						selectionBinding: "Contacts.groupsController.selection",
+						contentValueKey: "name",
+						canEditContent: YES,
+						exampleView: SC.ListItemView.design({
+							inlineEditorDidEndEditing: function() {
+								sc_super();
+								Contacts.store.commitRecords();
+							}
+						})
+					}),
+				}), // scroll view
+				toolbar: SC.ToolbarView.design({
+					classNames: "toolbar".w(),
+					layout: { left: 0, bottom: 0, right: 0, height: 32 },
+					childViews: "add remove".w(),
+					add: SC.ButtonView.design({
+						layout: { left: 0, top: 0, bottom: 0, width:32 },
+						title: "+"
+					}),
+					remove: SC.ButtonView.design({
+						layout: { left: 32, top: 0, bottom: 0, width:32 },
+						title: "-"
 					})
 				})
 			}),
@@ -44,46 +61,31 @@ Contacts.mainPage = SC.Page.design({
 			bottomRightView: SC.SplitView.design({
 				defaultThickness: 200,
 				dividerThickness: 1,
-				topLeftView: SC.ScrollView.design({
-					borderStyle: SC.BORDER_NONE,
-					contentView: SC.ListView.design({
-						contentBinding: "Contacts.contactsController.arrangedObjects",
-						selectionBinding: "Contacts.contactsController.selection",
-						contentValueKey: "fullName",
-						exampleView: SC.ListItemView.design({
-							/*renderLabel: function(context, label) {
-								if (label === undefined || label === 'undefined') label = "Loading...";
-								this._cachedLabel = label;
-								return arguments.callee.base.call(this, context, label);
-							},
-							mouseDown: function(evt){
-								sc_super();
-								var dv = SC.LabelView.create({
-									layout: {
-										height: this.get('layout').height,
-										width: 100
-									},
-
-									value: this._cachedLabel
-								}).createLayer();
-
-								// initiate the drag
-								SC.Drag.start({
-									event: evt,
-									source: this,
-									dragView: dv,
-									ghost: YES,
-									ghostActsLikeCursor: YES,
-									slideBack: YES,
-									dataSource: this
-								});
-
-								return YES;
-							},
-
-							dragDidEnd: function(drag){
-								//drag.dragView.destroy();
-							}*/
+				topLeftView: SC.View.design({
+					childViews: "toolbar contacts".w(),
+					toolbar: SC.ToolbarView.design({
+						classNames: "toolbar".w(),
+						layout: { left: 0, bottom: 0, right: 0, height: 32 },
+						childViews: "add remove".w(),
+						add: SC.ButtonView.design({
+							layout: { left: 0, top: 0, bottom: 0, width:32 },
+							title: "+"
+						}),
+						remove: SC.ButtonView.design({
+							layout: { left: 32, top: 0, bottom: 0, width:32 },
+							title: "-"
+						})
+					}),
+					contacts: SC.ScrollView.design({
+						layout: { left:0, right:0, top:0, bottom:32},
+						borderStyle: SC.BORDER_NONE,
+						contentView: SC.ListView.design({
+							contentBinding: "Contacts.contactsController.arrangedObjects",
+							selectionBinding: "Contacts.contactsController.selection",
+							contentValueKey: "fullName",
+							isDropTarget: YES,
+							delegate: Contacts.contactDragController,
+							canReorderContent: YES
 						})
 					})
 				}),
@@ -108,13 +110,14 @@ Contacts.mainPage = SC.Page.design({
 					
 					toolbar: SC.ToolbarView.design({
 						layout: { left:0, right:0, bottom:0, height:32 },
+						classNames: "toolbar".w(),
 						childViews: "edit save".w(),
 						edit: SC.ButtonView.design(Animate.Animatable, {
 							transitions: {
 								opacity: 0.25
 							},
 							title: "Edit",
-							layout: { left: 10, centerY: 0, height:24, width: 90 },
+							layout: { left: 0, top: 0, bottom: 0, width: 90 },
 							target: Contacts.contactController,
 							action: "beginEditing",
 							style: { opacity: 1 }
@@ -122,7 +125,7 @@ Contacts.mainPage = SC.Page.design({
 						save: SC.ButtonView.design(Animate.Animatable, {
 							transitions: { opacity: 0.25 },
 							title: "Save",
-							layout: { left: 10, centerY: 0, height: 24, width: 90 },
+							layout: { left: 0, top:0, bottom: 0, width: 90 },
 							target: Contacts.contactController,
 							action: "endEditing",
 							style: {

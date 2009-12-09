@@ -1,6 +1,7 @@
 .toolbar {
 	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#8F8F8F));
 	z-index:500;
+	border-left:1px solid #777;
 	-webkit-box-shadow: 0px 0px 2px black;
 }
 
@@ -11,3 +12,29 @@
 
 .sc-split-divider-view { background-color:#999; }
 .sc-split-divider-view { border:0px none; }
+
+/* Toolbar Buttons—normal */
+.toolbar .sc-button-view.sc-regular-size.square { 
+	max-height: none; background: transparent;
+	border-right:1px solid #777;
+	-webkit-text-shadow: 1px 1px 1px white;
+}
+.toolbar .sc-button-view.sc-regular-size.square .sc-button-inner {
+	padding-top:4px;
+	max-height:none; background:transparent; 
+}
+.toolbar .sc-button-view.sc-regular-size.square .ellipsis {
+	max-height:none; background:transparent;
+	margin: 0px;
+}
+
+/* Toolbar Buttons- Active */
+.toolbar .sc-button-view.sc-regular-size.square.active { 
+	max-height: none; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3F3F3F), to(#5B5B5B)); 
+}
+.toolbar .sc-button-view.sc-regular-size.square.active .sc-button-inner {
+	max-height:none; background: transparent; 
+}
+.toolbar .sc-button-view.sc-regular-size.square.active .ellipsis {
+	max-height:none; background: transparent;
+}

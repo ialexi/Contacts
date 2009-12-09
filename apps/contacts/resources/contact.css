@@ -1,5 +1,8 @@
+/* Row */
+.sc-form-row-view { overflow:visible; } /* for editing shadows */
 
 
+/* Text Field View */
 .contact-view .sc-text-field-view .border {
 	-webkit-appearance: none;
 	border: 0px none;
