@@ -4,6 +4,7 @@
 // ==========================================================================
 /*globals Contacts Animate */
 require("views/contact");
+
 // This page describes the main user interface for your application.  
 Contacts.mainPage = SC.Page.design({
 
