@@ -16,3 +16,6 @@
 [submodule "server/dobby"]
 	path = server/dobby
 	url = git://github.com/ialexi/dobby.git
+[submodule "frameworks/sproutcore.git"]
+	path = frameworks/sproutcore.git
+	url = git://github.com/ialexi/sproutcore.git
