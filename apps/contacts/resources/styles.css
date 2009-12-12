@@ -13,11 +13,26 @@
 .sc-split-divider-view { background-color:#999; }
 .sc-split-divider-view { border:0px none; }
 
+/* Groups */
+.groups .sc-list-view {
+	background-color:#ddddee;
+	color:#444455;
+	font-weight:bold;
+	text-shadow: 0px 1px 1px white;
+}
+
+.groups .sc-list-view .selected, .groups .sc-list-view .drag-potential {
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#7893FF), to(#6271F5));
+	background:-moz-gradient(linear, 0% 0%, 0% 100%, from(#7893FF), to(#6271F5));
+	text-shadow:0px 1px 1px black;
+	color:white;
+}
+
 /* Toolbar Buttons—normal */
 .toolbar .sc-button-view.sc-regular-size.square { 
 	max-height: none; background: transparent;
 	border-right:1px solid #777;
-	-webkit-text-shadow: 1px 1px 1px white;
+	text-shadow: 1px 1px 1px white;
 }
 .toolbar .sc-button-view.sc-regular-size.square .sc-button-inner {
 	padding-top:4px;

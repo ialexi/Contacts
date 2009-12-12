@@ -27,21 +27,65 @@ Contacts.mainPage = SC.Page.design({
 			topLeftView: SC.View.design({
 				childViews: "groupList toolbar".w(),
 				groupList: SC.ScrollView.design({
+					classNames: "groups".w(),
 					layout: { left:0, right:0, top:0, bottom:32},
 					borderStyle: SC.BORDER_NONE,
 					hasHorizontalScroller: NO,
 					contentView: SC.ListView.design({
 						contentBinding: "Contacts.groupsController.arrangedObjects",
 						selectionBinding: "Contacts.groupsController.selection",
+						delegate: Contacts.groupDropController,
 						contentValueKey: "name",
 						canEditContent: YES,
-						exampleView: SC.ListItemView.design({
-							inlineEditorDidEndEditing: function() {
+						rowHeight:24,
+						exampleView: SC.View.design({
+							childViews: "label".w(),
+							label: SC.LabelView.design({
+								layout: {left:10, right:10, height:18,centerY:0},
+								contentBinding: ".parentView.content",
+								contentValueKey: "name",
+								isEditable: YES,
+								fontWeight: SC.FONT_WEIGHT_BOLD,
+								inlineEditorDidEndEditing: function(){ 
+									sc_super();
+									Contacts.store.commitRecords();
+								}
+							}),
+							
+							isDropTarget: YES,
+							
+							computeDragOperations: function(drag, evt) {
+								return Contacts.groupsController.computeDragOperations(this.get("content"), drag);
+							},
+							
+							performDragOperation: function(drag, evt) {
+								console.error("HI");
+								return Contacts.groupsController.performDragOperations(this.get("content"), drag);
+							},
+							
+							dragEntered: function(){
+								this.$().addClass("drag-potential");
+							},
+							
+							dragExited: function(drag, evt) {
+								this.$().removeClass("drag-potential");
+							},
+							
+							acceptDragOperation: function() { return YES; },
+							
+							isSelected: NO,
+							isSelectedDidChange: function()
+							{
+								this.displayDidChange();
+							}.observes("isSelected"),
+							render: function(context) {
 								sc_super();
-								Contacts.store.commitRecords();
+								if (this.contentIndex % 2 === 0) context.addClass("even");
+								else context.addClass("odd");
+								if (this.get("isSelected")) context.addClass("selected");
 							}
 						})
-					}),
+					})
 				}), // scroll view
 				toolbar: SC.ToolbarView.design({
 					classNames: "toolbar".w(),
@@ -84,9 +128,10 @@ Contacts.mainPage = SC.Page.design({
 							contentBinding: "Contacts.contactsController.arrangedObjects",
 							selectionBinding: "Contacts.contactsController.selection",
 							contentValueKey: "fullName",
-							isDropTarget: YES,
-							delegate: Contacts.contactDragController,
-							canReorderContent: YES
+
+							delegate: Contacts.contactController,
+							canReorderContent: YES,
+							isDropTarget: YES							
 						})
 					})
 				}),

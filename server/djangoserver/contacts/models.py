@@ -1,5 +1,5 @@
 from django.db import models
-import cornelius.imperio
+import cornelius.dudley
 from django.db.models.signals import post_save
 
 
@@ -77,7 +77,7 @@ class Group(models.Model):
 def contact_saved(sender, **kwargs):
 	try:
 		instance = kwargs["instance"]
-		cornelius.imperio.update("contacts", json.dumps(instance.toRaw()))
+		cornelius.dudley.update("contacts", json.dumps(instance.toRaw()))
 	except:
 		pass
 
@@ -86,7 +86,7 @@ post_save.connect(contact_saved, sender=Contact)
 def group_saved(sender, **kwargs):
 	try:
 		instance = kwargs["instance"]
-		cornelius.imperio.update("groups", json.dumps(instance.toRaw()))
+		cornelius.dudley.update("groups", json.dumps(instance.toRaw()))
 	except:
 		pass
 

@@ -10,27 +10,31 @@
 
   @extends SC.Object
 */
-Contacts.contactsController = SC.ArrayController.create(
+Contacts.contactsController = SC.ArrayController.create(SC.CollectionViewDelegate,
 /** @scope Contacts.contactsController.prototype */ {
 	inputBinding: "Contacts.groupsController.selection",
 	inputBindingDefault: SC.Binding.single(),
+	contentBinding: ".*input.contacts",
 	canAddContent: YES,
 	canReorderContent: NO,
 	canRemoveContent: YES,
 	isEditable: YES,
-	test: function()
-	{
-		var c = [];
-		var i = this.get("input");
-		if (i)
-		{
-			if (i.get("length"))
-			{
-				console.error("YES");
-				i = i.firstObject();
-			}
-			c = i.get("contacts");
+	
+	collectionViewDragDataTypes: function(view) {
+		return [Contacts.Contact];
+	},
+	
+	collectionViewDragDataForType: function(view, drag, dataType) {
+		var ret = null, sel;
+		if (dataType == Contacts.Contact) {
+			sel = view.get("selection");
+			ret = [];
+			if (sel) sel.forEach(function(x){ ret.push(x); }, this);
 		}
-		this.set("content", c);
-	}.observes("input")
+		return ret;
+	},
+	
+	collectionViewComputeDragOperations: function(view, drag) {
+		return SC.DRAG_COPY;
+	}
 }) ;

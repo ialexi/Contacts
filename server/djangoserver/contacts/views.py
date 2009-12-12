@@ -1,7 +1,7 @@
 from models import Contact, Group
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
-import cornelius.imperio
+import cornelius.dudley
 
 try:
 	import simplejson as json
@@ -24,7 +24,13 @@ def group(request, gid):
 		data = json.loads(request.raw_post_data)
 		if len(data["name"]) > 0:
 			group.name = data["name"]
-			group.save()
+		if "contacts" in data:
+			contacts = []
+			group.contacts.clear()
+			for c in data["contacts"]:
+				c = Contact.objects.get(pk=c)
+				if c: group.contacts.add(c)
+		group.save()
 		return HttpResponse(format_groups([group]), mimetype="application/json")
 
 def format_groups(groups):
@@ -60,13 +66,10 @@ def format_contacts(contacts):
 
 def connect(request, uid):
 	paths = json.loads(request.raw_post_data)
-	# Unfortunately, this will send out a request for each. Optimizations would be nice...
-	for p in paths:
-		cornelius.imperio.connect(uid, p)
+	cornelius.dudley.connect(uid, paths)
 	return HttpResponse("{sent:true}", mimetype="application/json")
 
 def disconnect(request, uid):
 	paths = json.loads(request.raw_post_data)
-	for p in paths:
-		cornelius.imperio.disconnect(uid, p)
+	cornelius.dudley.disconnect(uid, paths)
 	return HttpResponse("{sent:true}", mimetype="application/json")

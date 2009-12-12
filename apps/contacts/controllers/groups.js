@@ -12,5 +12,18 @@
 */
 Contacts.groupsController = SC.ArrayController.create(
 /** @scope Contacts.groupsController.prototype */ {
-	allowMultipleSelection: NO
+	allowMultipleSelection: NO,
+	
+	computeDragOperations: function(group, drag){
+		var data = drag.dataForType(Contacts.Contact);
+		if (data) {
+			return SC.DRAG_COPY;
+		}
+	},
+	
+	performDragOperations: function(group, drag){
+		var data = drag.dataForType(Contacts.Contact);
+		group.get("contacts").pushObjects(data);
+		Contacts.store.commitRecords();
+	}
 }) ;
