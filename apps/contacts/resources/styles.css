@@ -1,5 +1,6 @@
 .toolbar {
 	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#8F8F8F));
+	background:-moz-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#8F8F8F));
 	z-index:500;
 	border-left:1px solid #777;
 	-webkit-box-shadow: 0px 0px 2px black;

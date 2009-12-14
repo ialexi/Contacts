@@ -10,7 +10,7 @@
 
   @extends SC.Object
 */
-Contacts.contactController = SC.Object.create(
+Contacts.contactController = SC.ObjectController.create(
 /** @scope Contacts.contactController.prototype */ {
 	contentBinding: "Contacts.contactsController.selection",
 	contentBindingDefault: SC.Binding.single(),

@@ -14,8 +14,13 @@ Contacts.mainPage = SC.Page.design({
 	mainPane: SC.MainPane.design({
 		childViews: 'toolbar splitter'.w(),
 		toolbar: SC.ToolbarView.design({
-		  classNames: ["toolbar"],
-			layout: { left: 0, top: 0, right: 0, height: 32 }
+			classNames: ["toolbar"],
+			layout: { left: 0, top: 0, right: 0, height: 32 },
+			childViews: "demo".w(),
+			demo: SC.LabelView.design({
+				layout: {centerY: 0, left: 10, height: 18, right: 10},
+				value: "Note: Demo mode is ON. Animations are slow (but hopefully smooth) for effect. :)"
+			})
 		}),
 		
 		// splitter between contact chooser and contact view.
@@ -145,14 +150,9 @@ Contacts.mainPage = SC.Page.design({
 						layout: { left: 15, right: 15, bottom: 47, top: 15 },
 						borderStyle: SC.BORDER_NONE,
 					  	contentView: Contacts.ContactView.design({
-						  contentBinding: "Contacts.contactsController.selection"
+						  contentBinding: "Contacts.contactController"
 					  })
 					}),
-					
-					beginEditing: function()
-					{
-						console.error("Hi");
-					},
 					
 					toolbar: SC.ToolbarView.design({
 						layout: { left:0, right:0, bottom:0, height:32 },
