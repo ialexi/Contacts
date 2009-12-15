@@ -6,7 +6,7 @@
 	url = git://github.com/ialexi/Forms.git
 [submodule "frameworks/sproutcore"]
 	path = frameworks/sproutcore
-	url = git://github.com/ialexi/sproutcore
+	url = git://github.com/ialexi/sproutcore.git
 [submodule "frameworks/pomona"]
 	path = frameworks/pomona
 	url = git://github.com/ialexi/pomona.git
