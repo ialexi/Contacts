@@ -42,6 +42,7 @@ Contacts.mainPage = SC.Page.design({
 						delegate: Contacts.groupDropController,
 						contentValueKey: "name",
 						canEditContent: YES,
+						canDeleteContent: YES,
 						rowHeight:24,
 						exampleView: SC.View.design({
 							childViews: "label".w(),
@@ -158,7 +159,7 @@ Contacts.mainPage = SC.Page.design({
 						layout: { left:0, right:0, bottom:0, height:32 },
 						classNames: "toolbar".w(),
 						childViews: "edit save".w(),
-						edit: SC.ButtonView.design(Animate.Animatable, {
+						edit: SC.ButtonView.design(SC.Animatable, {
 							transitions: {
 								opacity: 0.25
 							},
@@ -168,7 +169,7 @@ Contacts.mainPage = SC.Page.design({
 							action: "beginEditing",
 							style: { opacity: 1 }
 						}),
-						save: SC.ButtonView.design(Animate.Animatable, {
+						save: SC.ButtonView.design(SC.Animatable, {
 							transitions: { opacity: 0.25 },
 							title: "Save",
 							layout: { left: 0, top:0, bottom: 0, width: 90 },

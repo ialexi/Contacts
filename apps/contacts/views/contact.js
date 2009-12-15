@@ -2,7 +2,7 @@
 // Project:   Contacts.ContactView
 // Copyright: ©2009 Alex Iskander and TPSi
 // ==========================================================================
-/*globals Contacts */
+/*globals Contacts Forms */
 
 /** @class
 
@@ -11,7 +11,7 @@
 @extends SC.View
 */
 
-Animate.defaultTimingFunction = Animate.TRANSITION_EASE_IN_OUT;
+SC.Animatable.defaultTimingFunction = SC.Animatable.TRANSITION_EASE_IN_OUT;
 
 Contacts.ContactView = SC.View.extend(
 /** @scope Contacts.ContactView.prototype */ {
