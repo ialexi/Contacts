@@ -16,10 +16,25 @@ Contacts.mainPage = SC.Page.design({
 		toolbar: SC.ToolbarView.design({
 			classNames: ["toolbar"],
 			layout: { left: 0, top: 0, right: 0, height: 32 },
-			childViews: "demo".w(),
+			childViews: "demo search".w(),
+			
 			demo: SC.LabelView.design({
 				layout: {centerY: 0, left: 10, height: 18, right: 10},
 				value: "Note: Demo mode is ON. Animations are slow (but hopefully smooth) for effect. :)"
+			}),
+			
+			search: SC.TextFieldView.design({
+			  layout: { right: 10, width: 300, height: 20, centerY: 0 },
+			  classNames: ["searchBox"],
+			  hint: "Search...",
+			  leftAccessoryView: SC.View.create({
+			      layout: {left:5, width:20, height:16, centerY: 0 },
+			      childViews: 'icon'.w(),
+			      icon: SC.ImageView.create({
+			        layout: {left:0, top: 0, width:16, height: 16 },
+			        value: "icons search-16 icon"
+		        })
+			  })
 			})
 		}),
 		
@@ -30,10 +45,38 @@ Contacts.mainPage = SC.Page.design({
 			dividerThickness: 1,
 			// companies
 			topLeftView: SC.View.design({
-				childViews: "groupList toolbar".w(),
+				childViews: "allGroup groupList toolbar".w(),
+				classNames: "groups".w(),
+				
+				allGroup: SC.View.design({
+				  childViews: "label separator".w(),
+				  layout: { left: 0, right: 0, top: 0, height: 32 },
+				  
+				  selectedBinding: "Contacts.groupsController.allIsSelected",
+				  displayProperties: ["selected"],
+				  render: function(context){
+				    sc_super();
+				    if (this.get("selected")) context.addClass("selected");
+				  },
+				  
+				  click: function() {
+				    Contacts.groupsController.selectAllGroup();
+				    return YES;
+				  },
+				  
+				  label: SC.LabelView.design({
+				    layout: { height: 18, centerY: 0, left: 10, right: 10 },
+				    value: "All",
+				    fontWeight: SC.FONT_BOLD
+				  }),
+				  separator: SC.SeparatorView.design({
+				    layoutDirection: SC.LAYOUT_HORIZONTAL, 
+				    layout: { bottom:0, left:0, right:0, height: 1} 
+				  })
+				}),
+				
 				groupList: SC.ScrollView.design({
-					classNames: "groups".w(),
-					layout: { left:0, right:0, top:0, bottom:32},
+					layout: { left:0, right:0, top: 32, bottom:32},
 					borderStyle: SC.BORDER_NONE,
 					hasHorizontalScroller: NO,
 					contentView: SC.ListView.design({
@@ -58,8 +101,9 @@ Contacts.mainPage = SC.Page.design({
 								}
 							}),
 							
-							isDropTarget: YES,
+							beginEditing: function(){ this.label.beginEditing(); },
 							
+							isDropTarget: YES,							
 							computeDragOperations: function(drag, evt) {
 								return Contacts.groupsController.computeDragOperations(this.get("content"), drag);
 							},
@@ -99,7 +143,9 @@ Contacts.mainPage = SC.Page.design({
 					childViews: "add remove".w(),
 					add: SC.ButtonView.design({
 						layout: { left: 0, top: 0, bottom: 0, width:32 },
-						title: "+"
+						title: "+",
+						target: "Contacts.groupsController",
+						action: "addGroup"
 					}),
 					remove: SC.ButtonView.design({
 						layout: { left: 32, top: 0, bottom: 0, width:32 },
@@ -120,7 +166,9 @@ Contacts.mainPage = SC.Page.design({
 						childViews: "add remove".w(),
 						add: SC.ButtonView.design({
 							layout: { left: 0, top: 0, bottom: 0, width:32 },
-							title: "+"
+							title: "+",
+							target: "Contacts.contactsController",
+							action: "addContact"
 						}),
 						remove: SC.ButtonView.design({
 							layout: { left: 32, top: 0, bottom: 0, width:32 },
@@ -137,7 +185,8 @@ Contacts.mainPage = SC.Page.design({
 
 							delegate: Contacts.contactController,
 							canReorderContent: YES,
-							isDropTarget: YES							
+							isDropTarget: YES,
+							canDeleteContent: YES
 						})
 					})
 				}),

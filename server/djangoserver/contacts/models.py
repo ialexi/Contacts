@@ -42,14 +42,13 @@ class Contact(models.Model):
 		}
 		
 	def fromRaw(self, data):
-		if len(data["firstName"]) > 0 or len(data["lastName"]) > 0:
-			self.firstName = data["firstName"]
-			self.lastName = data["lastName"]
-		self.email = data["email"]
-		self.address = data["address"]
-		self.city = data["city"]
-		self.state = data["state"]
-		self.zipcode = data["zip"]
+		if "firstName" in data: self.firstName = data["firstName"] # Yes, these may be blank
+		if "lastName" in data: self.lastName = data["lastName"]
+		if "email" in data: self.email = data["email"]
+		if "address" in data: self.address = data["address"]
+		if "city" in data: self.city = data["city"]
+		if "state" in data: self.state = data["state"]
+		if "zip" in data: self.zipcode = data["zip"]
 	
 	def __unicode__(self):
 		return u"Contact: " + self.firstName + " " + self.lastName
@@ -69,8 +68,9 @@ class Group(models.Model):
 			contacts = [contact.pk for contact in self.contacts.all()]
 			data["contacts"] = contacts
 		return data
-	def fromRaw(self):
-		pass
+	def fromRaw(self, data):
+		self.name = data.name
+		
 
 
 # Comet alerters

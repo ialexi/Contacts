@@ -88,14 +88,37 @@ Contacts.Provider = SC.DataSource.extend(
 		if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Group)) {
 			var url = "/server/group/" + store.idFor(storeKey);
 			SC.Request.getUrl(url).json().notify(this, "didRetrieveGroup", store, storeKey).send();
+			return YES;
 		}
+		return NO;
 	},
 
 	createRecord: function(store, storeKey) {
-		// TODO: Add handlers to submit new records to the data source.
-		// call store.dataSourceDidComplete(storeKey) when done.
+	  var url = "";
+	  
+		if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Group)) {
+		  url = "/server/groups";
+	  } else if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Contact)) {
+	    url = "/server/contacts";
+	  }
+	  
+	  if (url !== "") {
+		  SC.Request.postUrl(url).json().notify(this, "didCreateRecord", store, storeKey)
+		  .send(store.readDataHash(storeKey));
+		  return YES;
+		}
 
 		return NO ; // return YES if you handled the storeKey
+	},
+	
+	didCreateRecord: function(response, store, storeKey) {
+	  if (SC.ok(response)) {
+	    var hash = response.get("body");
+	    if (hash) hash = hash[0];
+	    store.dataSourceDidComplete(storeKey, hash, hash.guid);
+	    return YES;
+	  }
+	  return NO;
 	},
 
 	updateRecord: function(store, storeKey) {
@@ -125,11 +148,26 @@ Contacts.Provider = SC.DataSource.extend(
 	},
 
 	destroyRecord: function(store, storeKey) {
-
-		// TODO: Add handlers to destroy records on the data source.
-		// call store.dataSourceDidDestroy(storeKey) when done
+	  var url = "";
+		if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Group)) {
+		  url = "/server/group/";
+	  } else if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Contact)) {
+		  url = "/server/contact/";
+	  }
+	  
+	  if (url !== "") {
+		  url += store.idFor(storeKey);
+		  SC.Request.deleteUrl(url).json().notify(this, "didDestroyRecord", store, storeKey)
+		  .send(store.readDataHash(storeKey));
+		}
 
 		return NO ; // return YES if you handled the storeKey
+	},
+	
+	didDestroyRecord: function(response, store, storeKey) {
+	  if (SC.ok(response)) {
+			store.dataSourceDidDestroy(storeKey);
+		} else store.dataSourceDidError(storeKey);
 	}
 
 }) ;

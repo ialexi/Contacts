@@ -19,10 +19,10 @@ Contacts.Contact = SC.Record.extend(
 	// full name
 	fullName: function()
 	{
-		var val = this.get("firstName") + " " + this.get("lastName");
-		val = val.trim();
-		if (val === "") val = this.get("company");
+		var val = (this.get("firstName") || "") + " " + (this.get("lastName") || "");
 		
+		if (val.trim() === "") val = this.get("company") || "";
+
 		return val;
 	}.property('firstName', 'lastName', 'company').cacheable(),
 	
@@ -39,5 +39,18 @@ Contacts.Contact = SC.Record.extend(
 	
 	groups: SC.Record.toMany("Contacts.Group", {
 		inverse: "contacts", isMaster: NO
-	})
+	}),
+	
+	pendingGroups: [],
+	storeDidChangeProperties: function() {
+	  if (this.get("guid")) {
+	    if (this.get("pendingGroups") && this.get("pendingGroups").get("length") > 0) {
+	      this.get("pendingGroups").forEach(function(item){
+	        item.get("contacts").pushObject(this);
+	      }, this);
+	      this.set("pendingGroups", []);
+	      Contacts.store.commitRecords();
+	    }
+	  }
+	}
 }) ;

@@ -13,14 +13,24 @@ def groups(request):
 	if request.method == "GET":
 		groups = Group.objects.all()
 		return HttpResponse(format_groups(groups), mimetype="application/json")
+	elif request.method == "POST":
+		group = Group()
+		data = json.loads(request.raw_post_data)
+		if len(data["name"]) > 0:
+			group.name = data["name"]
+			group.save()
+			return HttpResponse(format_groups([group]), mimetype="application/json")
+		raise "Got Error?"
 
 
 def group(request, gid):
+	group = get_object_or_404(Group, pk=int(gid))
 	if request.method == "GET":
-		group = get_object_or_404(Group, pk=int(gid))
 		return HttpResponse(format_groups([group]), mimetype="application/json")
+	elif request.method == "DELETE":
+		group.delete();
+		return HttpResponse("{deleted:true}")
 	elif request.method == "PUT":
-		group = get_object_or_404(Group, pk=int(gid))
 		data = json.loads(request.raw_post_data)
 		if len(data["name"]) > 0:
 			group.name = data["name"]
@@ -46,6 +56,12 @@ def contacts(request):
 	if request.method == "GET":
 		contacts = Contact.objects.all()
 		return HttpResponse(format_contacts(contacts), mimetype="application/json")
+	elif request.method == "POST":
+		contact = Contact()
+		data = json.loads(request.raw_post_data)
+		contact.fromRaw(data)
+		contact.save()
+		return HttpResponse(format_contacts([contact]), mimetype="application/json")
 
 
 def contact(request, cid):
@@ -54,6 +70,9 @@ def contact(request, cid):
 		data = json.loads(request.raw_post_data)
 		contact.fromRaw(data)
 		contact.save()
+	elif request.method == "DELETE":
+		contact.delete();
+		return HttpResponse("{deleted:true}")
 	return HttpResponse(format_contacts([contact]), mimetype="application/json")
 			
 

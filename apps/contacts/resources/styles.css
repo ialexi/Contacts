@@ -1,3 +1,4 @@
+/* Toolbars */
 .toolbar {
 	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#8F8F8F));
 	background:-moz-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#8F8F8F));
@@ -6,6 +7,15 @@
 	-webkit-box-shadow: 0px 0px 2px black;
 }
 
+/* Search box */
+.toolbar .searchBox .border {
+  -webkit-appearance: searchfield;
+  margin-top:-3px;
+}
+.toolbar. .searchBox input { background-color:transparent; }
+.toolbar .searchBox { background-color:transparent; }
+
+/* Contacts */
 .contact-panel {
 	-webkit-box-shadow: 0px 0px 10px black;
 	color:black;
@@ -15,14 +25,24 @@
 .sc-split-divider-view { border:0px none; }
 
 /* Groups */
-.groups .sc-list-view {
-	background-color:#ddddee;
-	color:#444455;
+.groups {
+  background-color: #cad0dd;
+  color:#444455;
 	font-weight:bold;
 	text-shadow: 0px 1px 1px white;
 }
 
-.groups .sc-list-view .selected, .groups .sc-list-view .drag-potential {
+.groups .sc-separator-view span {
+  border-color: #999;
+  left: 5px;
+  right: 5px;
+}
+
+.groups .sc-list-view {
+	background-color:transparent;
+}
+
+.groups .selected, .groups .sc-list-view .drag-potential {
 	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#7893FF), to(#6271F5));
 	background:-moz-gradient(linear, 0% 0%, 0% 100%, from(#7893FF), to(#6271F5));
 	text-shadow:0px 1px 1px black;
