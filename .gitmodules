@@ -19,3 +19,6 @@
 [submodule "frameworks/sproutcore.git"]
 	path = frameworks/sproutcore.git
 	url = git://github.com/ialexi/sproutcore.git
+[submodule "images/Spriter"]
+	path = images/Spriter
+	url = git://github.com/ialexi/Spriter.git
