@@ -41,6 +41,9 @@ Contacts.Contact = SC.Record.extend(
 		inverse: "contacts", isMaster: NO
 	}),
 	
+	searchRelevance: 0, // a property that others may use
+	searchFullName: "", // has things like <strong>The</strong> Search Term.
+	
 	pendingGroups: [],
 	storeDidChangeProperties: function() {
 	  if (this.get("guid")) {

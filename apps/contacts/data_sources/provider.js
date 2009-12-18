@@ -31,15 +31,22 @@ Contacts.Provider = SC.DataSource.extend(
 		if (message.trim() === "") return;
 		var data = JSON.parse(message);
 		
-		
-		Contacts.store.loadRecords(Contacts.Contact, [data]);
+		if (data.DELETE) {
+		  Contacts.store.pushDestroy(Contacts.Contact, data.guid);
+		} else {
+		  Contacts.store.loadRecords(Contacts.Contact, [data]);
+	  }
 	},
 	
 	groupReceived: function(path, message) {
 		if (message.trim() === "") return;
 		var data = JSON.parse(message);
 		
-		Contacts.store.loadRecords(Contacts.Group, [data]);
+		if (data.DELETE) {
+		  Contacts.store.pushDestroy(Contacts.Contact, data.guid);
+		} else {
+  		Contacts.store.loadRecords(Contacts.Group, [data]);
+		}
 	},
 	
 	fetch: function(store, query) {

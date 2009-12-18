@@ -12,12 +12,11 @@
 */
 Contacts.contactsController = SC.ArrayController.create(SC.CollectionViewDelegate,
 /** @scope Contacts.contactsController.prototype */ {
-	contentBinding: "Contacts.groupsController.effectiveSelection",
+	contentBinding: "Contacts.contactsSortController.sortedContent",
 	canAddContent: YES,
 	canReorderContent: NO,
 	canRemoveContent: YES,
 	isEditable: YES,
-	orderBy: "lastName",
 	
 	// deleting contacts is handled by contactsController.
 	// removing contacts from groups is handled by the groupConttroller.

@@ -1,6 +1,6 @@
 from django.db import models
 import cornelius.dudley
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 
 
 try:
@@ -81,7 +81,17 @@ def contact_saved(sender, **kwargs):
 	except:
 		pass
 
+def contact_deleted(sender, **kwargs):
+	try:
+		instance = kwargs["instance"]
+		struct = instance.toRaw()
+		struct["DELETE"] = True
+		cornelius.dudley.update("contacts", json.dumps(struct))
+	except:
+		pass
+
 post_save.connect(contact_saved, sender=Contact)
+post_delete.connect(contact_deleted, sender=Contact)
 
 def group_saved(sender, **kwargs):
 	try:
@@ -90,4 +100,15 @@ def group_saved(sender, **kwargs):
 	except:
 		pass
 
+def group_deleted(sender, **kwargs):
+	try:
+		instance = kwargs["instance"]
+		struct = instance.toRaw()
+		struct["DELETE"] = True
+		cornelius.dudley.update("groups", json.dumps(struct))
+	except:
+		pass
+
+
 post_save.connect(group_saved, sender=Group)
+post_delete.connect(group_deleted, sender=Group)

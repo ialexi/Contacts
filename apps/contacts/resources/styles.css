@@ -24,6 +24,10 @@
 .sc-split-divider-view { background-color:#999; }
 .sc-split-divider-view { border:0px none; }
 
+
+
+.contacts-list em { color:gray; }
+
 /* Groups */
 .groups {
   background-color: #cad0dd;

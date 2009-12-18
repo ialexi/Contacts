@@ -27,6 +27,7 @@ Contacts.mainPage = SC.Page.design({
 			  layout: { right: 10, width: 300, height: 20, centerY: 0 },
 			  classNames: ["searchBox"],
 			  hint: "Search...",
+			  valueBinding: "Contacts.contactSearchController.search",
 			  leftAccessoryView: SC.View.create({
 			      layout: {left:5, width:20, height:16, centerY: 0 },
 			      childViews: 'icon'.w(),
@@ -109,7 +110,6 @@ Contacts.mainPage = SC.Page.design({
 							},
 							
 							performDragOperation: function(drag, evt) {
-								console.error("HI");
 								return Contacts.groupsController.performDragOperations(this.get("content"), drag);
 							},
 							
@@ -176,17 +176,22 @@ Contacts.mainPage = SC.Page.design({
 						})
 					}),
 					contacts: SC.ScrollView.design({
+					  classNames: ["contacts-list"],
 						layout: { left:0, right:0, top:0, bottom:32},
 						borderStyle: SC.BORDER_NONE,
 						contentView: SC.ListView.design({
 							contentBinding: "Contacts.contactsController.arrangedObjects",
 							selectionBinding: "Contacts.contactsController.selection",
-							contentValueKey: "fullName",
+							contentValueKey: "searchFullName",
 
 							delegate: Contacts.contactController,
 							canReorderContent: YES,
 							isDropTarget: YES,
-							canDeleteContent: YES
+							canDeleteContent: YES,
+							
+							exampleView: SC.ListItemView.design({
+							  escapeHTML: NO
+							})
 						})
 					})
 				}),
