@@ -21,8 +21,8 @@
 .sc-view .sc-text-field-view .border, 
 .msie .contact-view .sc-text-field-view .border { border: 1px solid transparent; }
 
-.sc-view .sc-text-field-view.focus .border,
-.msie .sc-view .sc-text-field-view.focus .border { 
+.contact-view .sc-view .sc-text-field-view.focus .border,
+.contact-view .msie .sc-view .sc-text-field-view.focus .border { 
 	outline:0px none; 
 	border: 1px solid #888;
 	-moz-box-shadow: 3px 3px 5px gray; 
@@ -40,8 +40,8 @@
 	progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
 }
 
-.safari .sc-view .sc-text-field-view.focus {outline:0px none;}
-.mozilla .sc-view .sc-text-field-view.focus {outline:0px none;}
+.contact-view .safari .sc-view .sc-text-field-view.focus {outline:0px none;}
+.contact-view .mozilla .sc-view .sc-text-field-view.focus {outline:0px none;}
 
 
 /* Set font size */
@@ -101,3 +101,7 @@
 .form-row-label {
 	color:#777; font-weight:bold !important;
 }
+
+/* And, make hints keep showing, because the first field focuses automatically */
+.contact-view .sc-text-field-view.focus .sc-hint { display: block; }
+.contact-view .sc-text-field-view.not-empty .sc-hint { display: none; }
