@@ -22,10 +22,23 @@
 	color:black;
 }
 
-.sc-split-divider-view { background-color:#999; }
+.sc-split-divider-view { background-color:#999;}
 .sc-split-divider-view { border:0px none; }
 
+.contacts-list .sc-list-item-view { overflow:visible; }
+.contacts-list label { overflow:visible; }
 
+/* Search */
+.contacts-list strong { 
+  background: -moz-gradient(linear, 0% 0%, 0% 100%, from(#FFE645), to(#FF9F0F));
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFE645), to(#FF9F0F));
+  -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,.7);
+  -webkit-border-radius: 3px;
+  border: 1px solid #FFE645;
+  padding:2px;
+  position:relative;
+  z-index:10000;
+}
 
 .contacts-list em { color:gray; }
 

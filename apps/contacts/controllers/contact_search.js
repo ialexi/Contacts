@@ -30,9 +30,9 @@ Contacts.contactSearchController = SC.ArrayController.create(
     if (!full || full.trim().length === 0 || !part || part.trim().length === 0) return false;
     
     if (full.toLowerCase().indexOf(part.toLowerCase()) >= 0) {
-      return full.substr(0, full.indexOf(part)) + "<strong>" + 
-      full.substr(full.indexOf(part), part.length) + "</strong>" + 
-      full.substr(full.indexOf(part) + part.length);
+      return full.substr(0, full.toLowerCase().indexOf(part.toLowerCase())) + "<strong>" + 
+      full.substr(full.toLowerCase().indexOf(part.toLowerCase()), part.length) + "</strong>" + 
+      full.substr(full.toLowerCase().indexOf(part.toLowerCase()) + part.length);
     }
     
     return false;
