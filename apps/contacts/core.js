@@ -21,9 +21,9 @@ Contacts = SC.Application.create(
   // connect to a backend server.  The default setup below connects the store
   // to any fixtures you define.
   store: SC.Store.create({})
-  //.from(SC.Record.fixtures)
-  .from('Contacts.Provider')
-  /*store: Roots.Store.create({
+  .from(SC.Record.fixtures)
+  //.from('Contacts.Provider') // UNCOMMENT THIS FOR DJANGO BACK-END
+  /*store: Roots.Store.create({ // UNCOMMENT THIS BLOCK FOR MONGO BACK-END
     map: {
       "contacts": "Contacts.Contact",
       "groups": "Contacts.Group"
