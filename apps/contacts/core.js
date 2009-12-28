@@ -20,8 +20,9 @@ Contacts = SC.Application.create(
   // of your model data.  You can also set a data source on this store to
   // connect to a backend server.  The default setup below connects the store
   // to any fixtures you define.
-  store: SC.Store.create({
-  }).from(SC.Record.fixtures) //.from('Contacts.Provider')
+  store: SC.Store.create({})
+  //.from(SC.Record.fixtures)
+  .from('Contacts.Provider')
   /*store: Roots.Store.create({
     map: {
       "contacts": "Contacts.Contact",

@@ -14,15 +14,9 @@ Contacts.mainPage = SC.Page.design({
 	mainPane: SC.MainPane.design({
 		childViews: 'toolbar splitter'.w(),
 		toolbar: SC.ToolbarView.design({
-			classNames: ["toolbar"],
+			classNames: ["hback", "toolbar"],
 			layout: { left: 0, top: 0, right: 0, height: 32 },
-			childViews: "demo search".w(),
-			
-			demo: SC.LabelView.design({
-				layout: {centerY: 0, left: 10, height: 18, right: 10},
-				value: "Note: Demo mode is ON. Animations are slow (but hopefully smooth) for effect. :)"
-			}),
-			
+			childViews: "search".w(),
 			search: SC.TextFieldView.design({
 			  layout: { right: 10, width: 300, height: 20, centerY: 0 },
 			  classNames: ["searchBox"],
@@ -57,7 +51,7 @@ Contacts.mainPage = SC.Page.design({
 				  displayProperties: ["selected"],
 				  render: function(context){
 				    sc_super();
-				    if (this.get("selected")) context.addClass("selected");
+				    if (this.get("selected")) context.addClass("hback list-big-selection selected");
 				  },
 				  
 				  click: function() {
@@ -132,20 +126,24 @@ Contacts.mainPage = SC.Page.design({
 								sc_super();
 								if (this.contentIndex % 2 === 0) context.addClass("even");
 								else context.addClass("odd");
-								if (this.get("isSelected")) context.addClass("selected");
+								if (this.get("isSelected")) context.addClass("hback").addClass("list-big-selection").addClass("selected");
 							}
 						})
 					})
 				}), // scroll view
 				toolbar: SC.ToolbarView.design({
-					classNames: "toolbar".w(),
+					classNames: "hback toolbar".w(),
 					layout: { left: 0, bottom: 0, right: 0, height: 32 },
 					childViews: "add".w(),
 					add: SC.ButtonView.design({
 						layout: { left: 0, top: 0, bottom: 0, width:32 },
 						target: "Contacts.groupsController",
 						action: "addGroup",
-						classNames: ["icons", "plus", "icon"]
+						icon: "icons plus button-icon",
+						titleMinWidth: 16,
+						isActiveDidChange: function() {
+						  this.set("icon", (this.get("isActive") ? "icons plus-active button-icon" : "icons plus button-icon"));
+						}.observes("isActive")
 					})
 				})
 			}),
@@ -157,19 +155,19 @@ Contacts.mainPage = SC.Page.design({
 				topLeftView: SC.View.design({
 					childViews: "toolbar contacts".w(),
 					toolbar: SC.ToolbarView.design({
-						classNames: "toolbar".w(),
+						classNames: "hback toolbar".w(),
 						layout: { left: 0, bottom: 0, right: 0, height: 32 },
-						childViews: "add remove".w(),
+						childViews: "add".w(),
 						add: SC.ButtonView.design({
 							layout: { left: 0, top: 0, bottom: 0, width:32 },
-							title: "+",
 							target: "Contacts.contactsController",
-							action: "addContact"
-						}),
-						remove: SC.ButtonView.design({
-							layout: { left: 32, top: 0, bottom: 0, width:32 },
-							title: "-"
-						})
+							action: "addContact",
+  						icon: "icons plus button-icon",
+  						titleMinWidth: 16,
+  						isActiveDidChange: function() {
+  						  this.set("icon", (this.get("isActive") ? "icons plus-active button-icon" : "icons plus button-icon"));
+  						}.observes("isActive")
+  					})
 					}),
 					contacts: SC.ScrollView.design({
 					  classNames: ["contacts-list"],
@@ -230,7 +228,7 @@ Contacts.mainPage = SC.Page.design({
   								else context.addClass("odd");
   								
   								// is selected
-  								if (this.get("isSelected")) context.addClass("selected");
+  								if (this.get("isSelected")) context.addClass("list-selection").addClass("hback").addClass("selected");
   							}
   						})
 						})
@@ -272,7 +270,7 @@ Contacts.mainPage = SC.Page.design({
 					
 					toolbar: SC.ToolbarView.design({
 						layout: { left:0, right:0, bottom:0, height:32 },
-						classNames: "toolbar".w(),
+						classNames: "hback toolbar".w(),
 						childViews: "edit save".w(),
 						edit: SC.ButtonView.design(SC.Animatable, {
 							transitions: {

@@ -12,13 +12,11 @@
 // See comments for some pointers on what to do next.
 //
 Contacts.main = function main() {
-
 	Contacts.getPath('mainPage.mainPane').append() ;
 	var groups = Contacts.store.find(Contacts.Group);
 	var contacts = Contacts.store.find(Contacts.Contact);
 	Contacts.groupsController.set("all", contacts);
 	Contacts.groupsController.set('content', groups);
-
 } ;
 
 function main() { Contacts.main(); }

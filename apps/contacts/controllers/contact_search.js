@@ -15,7 +15,6 @@ Contacts.contactSearchController = SC.ArrayController.create(
   search: "",
   isSearching: NO,
   searchContent: null,
-  orderBy: "lastName",
   
   _match_start: function(full, part) {
     if (!full || full.trim().length === 0 || !part || part.trim().length === 0) return false;
@@ -105,7 +104,7 @@ Contacts.contactSearchController = SC.ArrayController.create(
     }
     
     this.set("searchContent", result);
-    this.set("isSearching", !(this.get("search").trim() == ""));
+    this.set("isSearching", !(this.get("search").trim() === ""));
   },
   
   contentDidChange: function(){

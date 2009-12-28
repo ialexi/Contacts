@@ -219,6 +219,7 @@ Roots.Source = SC.DataSource.extend(
   retrieveRecord: function(store, storeKey) {
     // if we don't have it, it does not exist!
     // So, tell them!
+    console.error("RETRIEVE!");
     var hash = {
       guid: store.idFor(storeKey),
       DELETE: true

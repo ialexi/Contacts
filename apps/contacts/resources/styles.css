@@ -1,10 +1,79 @@
+/* Loading Screen */
+@-webkit-keyframes loading-animate {
+  0% {
+    -webkit-transform: rotate(-10deg);
+  }
+  50% {
+    -webkit-transform: rotate(10deg);
+  }
+  100% {
+    -webkit-transform: rotate(-10deg);
+  }
+}
+.sc-theme #loading {
+  background:#555;
+  background:-webkit-gradient(linear, left top, left bottom, from(#777), to(#555));
+}
+.sc-theme #loading p.loading {
+  -webkit-animation-name: loading-animate;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  
+  -webkit-box-shadow:0px 0px 13px #222;
+  -moz-box-shadow:0px 0px 13px #222;
+  -ms-box-shadow:0px 0px 13px #222; /* Well, we can dream */
+  background-color:black;
+  padding-top:20px;
+  position:absolute;
+  left:50%;
+  width:300px;
+  top: 50%;
+  margin-left:-150px;
+  margin-top:-20px;
+  height: 40px;
+  font-size: 20px;
+  color:white;
+  border:0px none;
+  text-shadow:none;
+  text-align:center;
+}
+
 /* Toolbars */
 .toolbar {
-	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#6F6F6F));
-	background:-moz-gradient(linear, 0% 0%, 0% 100%, from(#ABABAB), to(#8F8F8F));
 	z-index:500;
-	border-left:1px solid #777;
-	-webkit-box-shadow: 0px 0px 2px black;
+	border-left:1px solid #888;
+	-webkit-box-shadow: none;
+}
+
+
+.toolbar .button-icon {
+  left: 0px; top: 0px; right: 0px; position: relative; width:16px; height:16px;
+}
+
+/* Toolbar Buttons—normal */
+.toolbar .sc-button-view.sc-regular-size.square { 
+	max-height: none; background: transparent;
+	border-right:1px solid #888;
+	text-shadow: 1px 1px 1px white;
+}
+.toolbar .sc-button-view.sc-regular-size.square .sc-button-inner {
+	padding-top:4px;
+	max-height:none; background:transparent; 
+}
+.toolbar .sc-button-view.sc-regular-size.square .ellipsis {
+	max-height:none; background:transparent;
+	margin: 0px;
+}
+
+/* Toolbar Buttons- Active */
+.toolbar .sc-button-view.sc-regular-size.square.active { 
+	max-height: none; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3F3F3F), to(#5B5B5B)); 
+}
+.toolbar .sc-button-view.sc-regular-size.square.active .sc-button-inner {
+	max-height:none; background: transparent; 
+}
+.toolbar .sc-button-view.sc-regular-size.square.active .ellipsis {
+	max-height:none; background: transparent;
 }
 
 /* Search box */
@@ -37,8 +106,6 @@
 }
 
 .contacts-list .selected {
-	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4853FF), to(#1231C5));
-	background:-moz-gradient(linear, 0% 0%, 0% 100%, from(#4853FF), to(#1231C5));
 	color:white;
 }
 
@@ -90,34 +157,7 @@
 }
 
 .groups .selected, .groups .sc-list-view .drag-potential {
-	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4853FF), to(#1231C5));
-	background:-moz-gradient(linear, 0% 0%, 0% 100%, from(#4853FF), to(#1231C5));
 	text-shadow:0px 1px 1px black;
 	color:white;
 }
 
-/* Toolbar Buttons—normal */
-.toolbar .sc-button-view.sc-regular-size.square { 
-	max-height: none; background: transparent;
-	border-right:1px solid #777;
-	text-shadow: 1px 1px 1px white;
-}
-.toolbar .sc-button-view.sc-regular-size.square .sc-button-inner {
-	padding-top:4px;
-	max-height:none; background:transparent; 
-}
-.toolbar .sc-button-view.sc-regular-size.square .ellipsis {
-	max-height:none; background:transparent;
-	margin: 0px;
-}
-
-/* Toolbar Buttons- Active */
-.toolbar .sc-button-view.sc-regular-size.square.active { 
-	max-height: none; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3F3F3F), to(#5B5B5B)); 
-}
-.toolbar .sc-button-view.sc-regular-size.square.active .sc-button-inner {
-	max-height:none; background: transparent; 
-}
-.toolbar .sc-button-view.sc-regular-size.square.active .ellipsis {
-	max-height:none; background: transparent;
-}

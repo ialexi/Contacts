@@ -62,6 +62,7 @@ Contacts.Contact = SC.Record.extend(
 	
 	pendingGroups: [],
 	storeDidChangeProperties: function() {
+	  sc_super();
 	  if (this.get("guid")) {
 	    if (this.get("pendingGroups") && this.get("pendingGroups").get("length") > 0) {
 	      this.get("pendingGroups").forEach(function(item){

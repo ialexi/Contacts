@@ -1,6 +1,5 @@
-from models import Contact, Group
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, Http404
 import cornelius.dudley
 
 try:
@@ -9,7 +8,9 @@ except ImportError:
 	import json
 	
 
-def groups(request):
+def records(request, rtype):
+	if not rtype in ["groups", "contacts"]: raise Http404
+	
 	if request.method == "GET":
 		groups = Group.objects.all()
 		return HttpResponse(format_groups(groups), mimetype="application/json")
@@ -43,13 +44,6 @@ def group(request, gid):
 		group.save()
 		return HttpResponse(format_groups([group]), mimetype="application/json")
 
-def format_groups(groups):
-	data = []
-	for g in groups:
-		data.append(g.toRaw())
-	return json.dumps(data)
-
-
 
 
 def contacts(request):
@@ -74,13 +68,6 @@ def contact(request, cid):
 		contact.delete();
 		return HttpResponse("{deleted:true}")
 	return HttpResponse(format_contacts([contact]), mimetype="application/json")
-			
-
-def format_contacts(contacts):
-	data = []
-	for c in contacts:
-		data.append(c.toRaw())
-	return json.dumps(data)
 
 
 def connect(request, uid):

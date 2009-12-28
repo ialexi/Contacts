@@ -23,7 +23,7 @@ Contacts.groupsController = SC.ArrayController.create(SC.CollectionViewDelegate,
     } else {
       this.recalculateFromGroups();
     }
-	}.observes("all"),
+	}.observes("all", "[]"),
 	
 	selectAllGroup: function(){
 	  this.set("selection", null);
@@ -32,22 +32,8 @@ Contacts.groupsController = SC.ArrayController.create(SC.CollectionViewDelegate,
 	},
 	
 	selectionDidChange: function() {
-	  for (var i = 0; i < this._observingGroups.length; i++){
-	    this._observingGroups[i].removeObserver("contacts", this, this.groupDidChange);
-	  }
-	  this._observingGroups.length = 0;
-	  if (this.get("selection")) {
-	    this.get("selection").forEach(function(item) {
-  	    item.addObserver("contacts", this, this.groupDidChange);
-  	    this._observingGroups.push(item);
-  	  }, this);
-    }
 	  this.recalculateFromGroups();
 	}.observes("selection"),
-	
-	groupDidChange: function() {
-	  this.recalculateFromGroups();
-	},
 	
 	recalculateFromGroups: function() {
 	  if (this.get("selection") && this.get("selection").get("length") > 0) {
@@ -56,7 +42,7 @@ Contacts.groupsController = SC.ArrayController.create(SC.CollectionViewDelegate,
 	      result.addEach(group.get("contacts"));
 	    });
 	    
-	    this.set("effectiveSelection", result);
+	    this.set("effectiveSelection", result.toArray());
 	    this.set("allIsSelected", NO);
     }
 	},
@@ -133,6 +119,7 @@ Contacts.groupsController = SC.ArrayController.create(SC.CollectionViewDelegate,
 	  sel.forEach(function(item) {
 	    item.get("contacts").removeObjects(contacts);
 	  });
+	  Contacts.store.commitRecords();
 	},
 	
 	addNewContact: function(contact) {
