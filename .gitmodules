@@ -6,7 +6,7 @@
 	url = git://github.com/ialexi/Forms.git
 [submodule "frameworks/sproutcore"]
 	path = frameworks/sproutcore
-	url = git://github.com/ialexi/sproutcore.git
+	url = git://github.com/sproutit/sproutcore.git
 [submodule "frameworks/pomona"]
 	path = frameworks/pomona
 	url = git://github.com/ialexi/pomona.git
@@ -22,3 +22,6 @@
 [submodule "images/Spriter"]
 	path = images/Spriter
 	url = git://github.com/ialexi/Spriter.git
+[submodule "server/mongo/cornelius"]
+	path = server/mongo/cornelius
+	url = git://github.com/ialexi/cornelius.git
