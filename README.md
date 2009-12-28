@@ -28,8 +28,8 @@ To initialize all submodules and set up the sample database:
 
 It will show everything it does.
 
-Change apps/contacts/core.js to enable the back-end by uncommenting
-the line for the django back-end.
+**Now, change apps/contacts/core.js to enable the back-end by uncommenting
+the line for the django back-end.**
 
 To run:
 		> python contacts.py start
