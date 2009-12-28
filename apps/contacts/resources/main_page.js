@@ -140,16 +140,12 @@ Contacts.mainPage = SC.Page.design({
 				toolbar: SC.ToolbarView.design({
 					classNames: "toolbar".w(),
 					layout: { left: 0, bottom: 0, right: 0, height: 32 },
-					childViews: "add remove".w(),
+					childViews: "add".w(),
 					add: SC.ButtonView.design({
 						layout: { left: 0, top: 0, bottom: 0, width:32 },
-						title: "+",
 						target: "Contacts.groupsController",
-						action: "addGroup"
-					}),
-					remove: SC.ButtonView.design({
-						layout: { left: 32, top: 0, bottom: 0, width:32 },
-						title: "-"
+						action: "addGroup",
+						classNames: ["icons", "plus", "icon"]
 					})
 				})
 			}),
@@ -188,10 +184,55 @@ Contacts.mainPage = SC.Page.design({
 							canReorderContent: YES,
 							isDropTarget: YES,
 							canDeleteContent: YES,
+							rowHeight: 22,
 							
-							exampleView: SC.ListItemView.design({
-							  escapeHTML: NO
-							})
+  						exampleView: SC.View.design({
+  							childViews: "image label".w(),
+  							isCompanyBinding: "*content.isCompany",
+  							classNames: ["contact-item"],
+  							
+  							image: SC.ImageView.design({
+  							  layout: {left:5, width:16, height: 16, centerY:0},
+  							  value: ""
+  							}),
+  							
+  							label: SC.LabelView.design({
+  							  escapeHTML: NO,
+  								layout: {left:28, right:10, height:18,centerY:0},
+  								contentBinding: ".parentView.content",
+  								contentValueKey: "searchFullName",
+  								inlineEditorDidEndEditing: function(){ 
+  									sc_super();
+  									Contacts.store.commitRecords();
+  								}
+  							}),
+  							
+  							isSelected: NO,
+  							isSelectedDidChange: function()
+  							{
+  								this.displayDidChange();
+  							}.observes("isSelected"),
+  							isCompanyDidChange: function() {
+  								// is company (for the icon)
+  								if (this.get("isCompany")) {
+  								  this.image.set("value", "icons company");
+								  } else {
+								    this.image.set("value", "icons person");
+								  }
+  							}.observes("isCompany"),
+  							
+  							
+  							render: function(context) {
+  								sc_super();
+  								
+  								// even/odd
+  								if (this.contentIndex % 2 === 0) context.addClass("even");
+  								else context.addClass("odd");
+  								
+  								// is selected
+  								if (this.get("isSelected")) context.addClass("selected");
+  							}
+  						})
 						})
 					})
 				}),
@@ -199,14 +240,34 @@ Contacts.mainPage = SC.Page.design({
 				// contact view
 				bottomRightView: SC.View.design({
 					backgroundColor: "#555",
-					childViews: 'contactView toolbar'.w(),
-					contactView: SC.ScrollView.design({
+					childViews: 'noContactView contactView toolbar'.w(),
+					contactView: SC.ScrollView.design(SC.Animatable, {
+					  style: {
+					    opacity: 0,
+					    display: "none"
+					  },
+					  transitions: { 
+					    opacity: 0.15,
+					    display: 0.5
+					  },
+					  
 						classNames: ["contact-panel"],
 						layout: { left: 15, right: 15, bottom: 47, top: 15 },
 						borderStyle: SC.BORDER_NONE,
 					  	contentView: Contacts.ContactView.design({
 						  contentBinding: "Contacts.contactController"
-					  })
+					  }),
+					  
+					  shouldDisplayBinding: "Contacts.contactController.shouldDisplay",
+					  shouldDisplayDidChange: function(){
+					    if (this.get("shouldDisplay")) this.adjust({"opacity": 1.0, display: "block"});
+					    else this.adjust({"opacity": 0, display: "none"});
+					  }.observes("shouldDisplay")
+					}),
+					
+					noContactView: SC.LabelView.design({
+					  layout: { centerX: 0, centerY: 0, height: 18, width: 200 },
+				    value: "No Contact Selected"
 					}),
 					
 					toolbar: SC.ToolbarView.design({

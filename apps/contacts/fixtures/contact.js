@@ -46,5 +46,89 @@ Contacts.Contact.FIXTURES = [
 		"zip": "74146",
 		"active": false,
 		"relationship": "enemy"
+	},
+	{
+		"guid": 4,
+		"firstName": "Smeagol",
+		"lastName": "Kentucky",
+		"address": "Under a Rock",
+		"city": "Mordor",
+		"state": "ME",
+		"zip": "74146",
+		"active": false,
+		"relationship": "enemy"
+	},
+	
+	{
+		"guid": 5,
+		"firstName": "Jackie",
+		"lastName": "Iskander",
+		"company": "Jacqueline Iskander Mosaic Studio",
+		"address": "A House Somewhere\nThe Studio",
+		"city": "Tulsa",
+		"state": "OK",
+		"zip": "74146",
+		"active": true,
+		"relationship": "family"
+	},
+	
+	{
+		"guid": 6,
+		"firstName": "Harry",
+		"lastName": "Potter",
+		"company": "TPSi",
+		"address": "No. 4 Privet Drive\nThe Cupboard Under the Stairs",
+		"city": "Little Whinging",
+		"state": "Surrey",
+		"zip": "",
+		"active": true,
+		"relationship": "friend"
+	},
+	
+	{
+		"guid": 7,
+		"firstName": "Minerva",
+		"lastName": "McGonnagal",
+		"company": "TPSi",
+		"address": "Hogwarts\nHeadmistress's Office",
+		"city": "Scottland",
+		"state": "",
+		"zip": "",
+		"active": true,
+		"relationship": "enemy"
+	},
+	
+	{
+		"guid": 8,
+		"firstName": "Frodo",
+		"lastName": "Baggins",
+		"company": "Fellowship",
+		"active": false,
+		"relationship": "friend"
+	},
+	
+	{
+		"guid": 9,
+		"firstName": "Aragorn",
+		"lastName": "Arathorn",
+		"company": "Fellowship",
+		"active": false,
+		"relationship": "friend"
+	},
+	
+	{
+		"guid": 10,
+		"firstName": "Gandalf",
+		"lastName": "Gray",
+		"company": "Fellowship",
+		"active": false,
+		"relationship": "friend"
+	},
+	
+	{
+		"guid": 11,
+		"company": "Fellowship",
+		"active": false,
+		"relationship": "friend"
 	}
 ];

@@ -26,6 +26,13 @@ Contacts.Contact = SC.Record.extend(
 		return val;
 	}.property('firstName', 'lastName', 'company').cacheable(),
 	
+	isCompany: function(){
+	  var val = (this.get("firstName") || "") + " " + (this.get("lastName") || "");
+		
+		if (val.trim() === "") return YES;
+		return NO;
+	}.property('firstName', 'lastName', 'company').cacheable(),
+	
 	// it is a company? Yes no.
 	company: SC.Record.attr(String),
 	
@@ -38,11 +45,20 @@ Contacts.Contact = SC.Record.extend(
 	email: SC.Record.attr(String),
 	
 	groups: SC.Record.toMany("Contacts.Group", {
-		inverse: "contacts", isMaster: NO
+		inverse: "contacts"
 	}),
 	
 	searchRelevance: 0, // a property that others may use
 	searchFullName: "", // has things like <strong>The</strong> Search Term.
+	
+	/* Sync stuff */
+	destroy: function() {
+	  this.get("groups").forEach(function(group){
+	    group.get("contacts").removeObject(this);
+	    group.commitRecord();
+	  }, this);
+	  sc_super();
+	},
 	
 	pendingGroups: [],
 	storeDidChangeProperties: function() {

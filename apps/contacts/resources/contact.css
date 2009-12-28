@@ -40,8 +40,8 @@
 	progid:DXImageTransform.Microsoft.Blur(pixelradius=2);
 }
 
-.contact-view .safari .sc-view .sc-text-field-view.focus {outline:0px none;}
-.contact-view .mozilla .sc-view .sc-text-field-view.focus {outline:0px none;}
+.safari .contact-view .sc-view .sc-text-field-view.focus {outline:0px none;}
+.mozilla .contact-view .sc-view .sc-text-field-view.focus {outline:0px none;}
 
 
 /* Set font size */

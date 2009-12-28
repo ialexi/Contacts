@@ -13,6 +13,7 @@ Contacts.contactSearchController = SC.ArrayController.create(
   content: null,
   contentBinding: "Contacts.groupsController.effectiveSelection",
   search: "",
+  isSearching: NO,
   searchContent: null,
   orderBy: "lastName",
   
@@ -104,6 +105,7 @@ Contacts.contactSearchController = SC.ArrayController.create(
     }
     
     this.set("searchContent", result);
+    this.set("isSearching", !(this.get("search").trim() == ""));
   },
   
   contentDidChange: function(){

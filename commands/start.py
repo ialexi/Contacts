@@ -5,7 +5,7 @@ multiserve.setBase(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 commands = [
 	# Django
 	multiserve.relative("server/djangoserver"),
-	["python", "manage.py", "runserver"],
+	["python", "manage.py", "runserver", "0.0.0.0:8000"],
 	
 	# Dobby
 	multiserve.relative("server/dobby"),

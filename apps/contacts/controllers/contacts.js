@@ -13,6 +13,7 @@
 Contacts.contactsController = SC.ArrayController.create(SC.CollectionViewDelegate,
 /** @scope Contacts.contactsController.prototype */ {
 	contentBinding: "Contacts.contactsSortController.sortedContent",
+	isSearchingBinding: "Contacts.contactSearchController.isSearching",
 	canAddContent: YES,
 	canReorderContent: NO,
 	canRemoveContent: YES,
@@ -22,6 +23,14 @@ Contacts.contactsController = SC.ArrayController.create(SC.CollectionViewDelegat
 	// removing contacts from groups is handled by the groupConttroller.
 	inAll: YES, // can be NO or YES. If YES, the parent controller is called to remove items.
 	inAllBinding: "Contacts.groupsController.allIsSelected",
+	
+	resultDidChange: function() {
+	  if (this.get("isSearching")) {
+	    // select the first, or none at all
+	    if (this.get("length") > 0) this.selectObject(this.objectAt(0));
+	    else this.deselectObjects(this.get("selection"));
+	  }
+	}.observes("[]"),
 	
 	collectionViewDragDataTypes: function(view) {
 		return [Contacts.Contact];

@@ -1,94 +1,113 @@
-from models import Contact, Group
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
-import cornelius.dudley
+from django.http import HttpResponse
+from django.http import Http404
+from cornelius import dudley
+import datetime
+import random
+import re, string
 
-try:
-	import simplejson as json
-except ImportError:
-	import json
+try: import simplejson as json
+except ImportError: import json
+
+class Roots(object):
+	def __init__(self, root, allowed):
+		"""
+		Initializes a Roots server object with a set of allowed attach points.
+		"""
+		if not allowed:
+			allowed = []
+		self.allowed = allowed
+		self.root = root
+	
+	def __call__(self, request, rtype):
+		""" The main responder """
+		if not rtype in self.allowed:
+			raise Http404
+		
+		if request.method == "GET":
+			return self.get(request, rtype)
+		elif request.method == "PUT": # delete is done with record containing "DELETE"==True
+			return self.put(request, rtype)
+	
+	def get(self, request, rtype):
+		# for now, we only support sending _All_ data to the client.
+		did = None
+		if "did" in request.GET: did = request.GET["did"]
+		
+		data = self.attach(rtype, did) # attach returns a dump of the data
+		return HttpResponse(json.dumps(data), mimetype="application/json")
+	
+	def attach(self, rtype, did):
+		# connect if we can
+		if did: dudley.connect(did, (rtype, ))
+		
+		# now, get records and return that
+		return self.fetch_records(rtype)
+	
+	def put(self, request, rtype):
+		records = json.loads(request.raw_post_data)
+		result = self.receive_records(rtype, records)
+		return HttpResponse(json.dumps(result), mimetype="application/json")
+		
+	def fetch_records(self, rtype):
+		return []
+	
+	def receive_records(self, rtype, records):
+		return []
 	
 
-def groups(request):
-	if request.method == "GET":
-		groups = Group.objects.all()
-		return HttpResponse(format_groups(groups), mimetype="application/json")
-	elif request.method == "POST":
-		group = Group()
-		data = json.loads(request.raw_post_data)
-		if len(data["name"]) > 0:
-			group.name = data["name"]
-			group.save()
-			return HttpResponse(format_groups([group]), mimetype="application/json")
-		raise "Got Error?"
-
-
-def group(request, gid):
-	group = get_object_or_404(Group, pk=int(gid))
-	if request.method == "GET":
-		return HttpResponse(format_groups([group]), mimetype="application/json")
-	elif request.method == "DELETE":
-		group.delete();
-		return HttpResponse("{deleted:true}")
-	elif request.method == "PUT":
-		data = json.loads(request.raw_post_data)
-		if len(data["name"]) > 0:
-			group.name = data["name"]
-		if "contacts" in data:
-			contacts = []
-			group.contacts.clear()
-			for c in data["contacts"]:
-				c = Contact.objects.get(pk=c)
-				if c: group.contacts.add(c)
-		group.save()
-		return HttpResponse(format_groups([group]), mimetype="application/json")
-
-def format_groups(groups):
-	data = []
-	for g in groups:
-		data.append(g.toRaw())
-	return json.dumps(data)
-
-
-
-
-def contacts(request):
-	if request.method == "GET":
-		contacts = Contact.objects.all()
-		return HttpResponse(format_contacts(contacts), mimetype="application/json")
-	elif request.method == "POST":
-		contact = Contact()
-		data = json.loads(request.raw_post_data)
-		contact.fromRaw(data)
-		contact.save()
-		return HttpResponse(format_contacts([contact]), mimetype="application/json")
-
-
-def contact(request, cid):
-	contact = get_object_or_404(Contact, pk=int(cid))
-	if request.method == "PUT":
-		data = json.loads(request.raw_post_data)
-		contact.fromRaw(data)
-		contact.save()
-	elif request.method == "DELETE":
-		contact.delete();
-		return HttpResponse("{deleted:true}")
-	return HttpResponse(format_contacts([contact]), mimetype="application/json")
+from pymongo import Connection
+class MongoRoots(Roots):
+	def __init__(self, root, allowed, db):
+		Roots.__init__(self, root, allowed)
+		self.db = db
+	
+	def fetch_records(self, rtype):
+		result = []
+		for i in self.db[rtype].find():
+			r = {}
+			for key in i:
+				value = i[key]
+				
+				# skip _id
+				if key == "_id": continue
+				if isinstance(value, datetime.datetime) or isinstance(value, datetime.time) or isinstance(value, datetime.date):
+					value = value.isoformat() # it should usually be stored in string format anyway...
+				r[key] = value
+			result.append(r)
+		return result
+	
+	def receive_records(self, rtype, records):
+		"""receive messages"""
+		result = []
+		updates = []
+		for record in records:
+			if not "id" in record:
+				continue
 			
+			existing = None
+			
+			# get a valid full id
+			id = record["id"]
+						
+			# see if there is an existing.
+			existing = self.db[rtype].find_one({"id": id})
+			
+			# if so, grab the _id from the old one.
+			if existing: record["_id"] = existing["_id"]
+			
+			# see if we are supposed to delete.
+			if "DELETE" in record and record["DELETE"]:
+				if existing: self.db[rtype].remove(record["_id"])
+				else: continue
+			else:
+				self.db[rtype].save(record)
+			
+			del record["_id"]
+			result.append(record)
+			updates.append( (rtype, json.dumps(record)) )
+		
+		dudley.updates(updates) # Delete, updates, and adds! So easy!
+		return result
 
-def format_contacts(contacts):
-	data = []
-	for c in contacts:
-		data.append(c.toRaw())
-	return json.dumps(data)
 
-
-def connect(request, uid):
-	paths = json.loads(request.raw_post_data)
-	cornelius.dudley.connect(uid, paths)
-	return HttpResponse("{sent:true}", mimetype="application/json")
-
-def disconnect(request, uid):
-	paths = json.loads(request.raw_post_data)
-	cornelius.dudley.disconnect(uid, paths)
-	return HttpResponse("{sent:true}", mimetype="application/json")
+records = MongoRoots("contacts", ["groups", "contacts"], db=Connection().contacts)

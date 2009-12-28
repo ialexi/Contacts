@@ -24,7 +24,7 @@ Contacts.ContactView = SC.View.extend(
 		sc_super();
 		if (this.get("form") && !this.get("form").isClass) this.adjust("minHeight", this.getPath("form.layout").minHeight + 40);
 	},
-	form: Forms.FormView.design(Forms.FormAnimation, Forms.FormAnimation.DemoMode, {
+	form: Forms.FormView.design(Forms.FormAnimation, {
 		editsByDefault: NO,
 		layout: { left: 20, top: 20, right: 20, bottom: 20 },
 		contentBinding: ".parentView.content",

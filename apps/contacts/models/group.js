@@ -14,7 +14,7 @@
 Contacts.Group = SC.Record.extend(
 /** @scope Contacts.Group.prototype */ {
 	contacts: SC.Record.toMany("Contacts.Contact", {
-		inverse: "groups", isMaster: YES
+	  inverse: "groups"
 	}),
 	
 	name: SC.Record.attr(String)

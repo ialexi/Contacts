@@ -17,6 +17,11 @@ Contacts.contactController = SC.ObjectController.create(
 	
 	isEditing: NO,
 	
+	contentDidChange: function() {
+	  if (this.get("content")) this.set("shouldDisplay", YES);
+	  else this.set("shouldDisplay", NO);
+	}.observes("content"),
+	
 	beginEditing: function()
 	{
 		this.set("isEditing", YES);

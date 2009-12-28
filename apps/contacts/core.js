@@ -2,7 +2,7 @@
 // Project:   Contacts
 // Copyright: ©2009 Alex Iskander and TPSi
 // ==========================================================================
-/*globals Contacts */
+/*globals Contacts Roots */
 
 /** @namespace
 
@@ -21,7 +21,14 @@ Contacts = SC.Application.create(
   // connect to a backend server.  The default setup below connects the store
   // to any fixtures you define.
   store: SC.Store.create({
-  }).from('Contacts.Provider')
+  }).from(SC.Record.fixtures) //.from('Contacts.Provider')
+  /*store: Roots.Store.create({
+    map: {
+      "contacts": "Contacts.Contact",
+      "groups": "Contacts.Group"
+    },
+    rootPath: "/server"
+  })*/
   
   // TODO: Add global constants or singleton objects needed by your app here.
 
