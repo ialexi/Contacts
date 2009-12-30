@@ -5,7 +5,7 @@ urlpatterns = patterns('',
 	# Each server (groups and contacts) works with URLs like this:
 	# contacts/groups|contacts
 	
-	(r'^contacts/(?P<rtype>groups|contacts)$', 'contacts.views.records'),
+	(r'^(?P<rtype>groups|contacts)$', 'contacts.views.records'),
 	
 	# These should eventually be bundled into attach
 	#(r'^contacts/connect/(?P<uid>[^\s]+)$', "contacts.views.connect"),
