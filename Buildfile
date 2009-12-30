@@ -4,6 +4,6 @@
 # ===========================================================================
 
 # Add initial buildfile information here
-config :all, :required => :sproutcore, :load_fixtures => true
-proxy '/server/', :to => 'localhost:8000', :url=> '/contacts/'
+config :all, :required => :sproutcore, :url_prefix => "/contacts/"
+proxy '/s/contacts/', :to => 'localhost:8000', :url=> '/contacts'
 proxy '/comet/', :to => 'localhost:8008', :url=> '/'

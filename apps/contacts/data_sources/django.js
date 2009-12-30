@@ -57,7 +57,7 @@ Contacts.Provider = SC.DataSource.extend(
 				store.dataSourceDidFetchQuery(query);
 				return YES;
 			}
-			SC.Request.getUrl("/server/groups").json().notify(this, "didFetchGroups", store, query).send();
+			SC.Request.getUrl("/s/contacts/groups").json().notify(this, "didFetchGroups", store, query).send();
 			return YES;
 		} else if (query.get("recordType") === Contacts.Contact) {
 			if (this.get("hasFetchedContacts"))
@@ -65,7 +65,7 @@ Contacts.Provider = SC.DataSource.extend(
 				store.dataSourceDidFetchQuery(query);
 				return YES;
 			}
-			SC.Request.getUrl("/server/contacts").json().notify(this, "didFetchContacts", store, query).send();
+			SC.Request.getUrl("/s/contacts/contacts").json().notify(this, "didFetchContacts", store, query).send();
 			return YES;
 		}
 		return NO;
@@ -93,7 +93,7 @@ Contacts.Provider = SC.DataSource.extend(
 
 	retrieveRecord: function(store, storeKey) {
 		if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Group)) {
-			var url = "/server/group/" + store.idFor(storeKey);
+			var url = "/s/contacts/group/" + store.idFor(storeKey);
 			SC.Request.getUrl(url).json().notify(this, "didRetrieveGroup", store, storeKey).send();
 			return YES;
 		}
@@ -104,9 +104,9 @@ Contacts.Provider = SC.DataSource.extend(
 	  var url = "";
 	  
 		if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Group)) {
-		  url = "/server/groups";
+		  url = "/s/contacts/groups";
 	  } else if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Contact)) {
-	    url = "/server/contacts";
+	    url = "/s/contacts/contacts";
 	  }
 	  
 	  if (url !== "") {
@@ -131,9 +131,9 @@ Contacts.Provider = SC.DataSource.extend(
 	updateRecord: function(store, storeKey) {
 		var url = "";
 		if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Group)) {
-			url = "/server/group/";
+			url = "/s/contacts/group/";
 		} else if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Contact))  {
-			url = "/server/contact/";
+			url = "/s/contacts/contact/";
 		}
 		
 		if (url !== "") {
@@ -157,9 +157,9 @@ Contacts.Provider = SC.DataSource.extend(
 	destroyRecord: function(store, storeKey) {
 	  var url = "";
 		if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Group)) {
-		  url = "/server/group/";
+		  url = "/s/contacts/group/";
 	  } else if (SC.kindOf(store.recordTypeFor(storeKey), Contacts.Contact)) {
-		  url = "/server/contact/";
+		  url = "/s/contacts/contact/";
 	  }
 	  
 	  if (url !== "") {

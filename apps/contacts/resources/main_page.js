@@ -143,6 +143,7 @@ Contacts.mainPage = SC.Page.design({
 						titleMinWidth: 16,
 						isActiveDidChange: function() {
 						  this.set("icon", (this.get("isActive") ? "icons plus-active button-icon" : "icons plus button-icon"));
+						  this.displayDidChange();
 						}.observes("isActive")
 					})
 				})
@@ -166,6 +167,7 @@ Contacts.mainPage = SC.Page.design({
   						titleMinWidth: 16,
   						isActiveDidChange: function() {
   						  this.set("icon", (this.get("isActive") ? "icons plus-active button-icon" : "icons plus button-icon"));
+						    this.displayDidChange();
   						}.observes("isActive")
   					})
 					}),

@@ -25,7 +25,8 @@ Roots.Source = SC.DataSource.extend(
   map: {
   },
   
-  firenzePort: 4020,
+  firenzePort: window.location.port,
+  firenzeDomain: document.domain,
   firenzePrefix: "comet/",
   firenzeProtocol: "http",
   
@@ -44,6 +45,7 @@ Roots.Source = SC.DataSource.extend(
     // we relay all fetches through firenze so that it can re-fetch if Comet is interrupted.
     this.firenze = Pomona.Firenze.create({
       prefix: this.firenzePrefix,
+      domain: this.firenzeDomain,
       port: this.firenzePort,
       protocol: this.firenzeProtocol,
       requestAttachments: function(connections){
