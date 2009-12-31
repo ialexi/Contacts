@@ -39,7 +39,7 @@ class RootRequest(object):
 				self.push("::error", {"type": "could not read updates"})
 	
 	def push(self, path, message):
-		self.queuedUpdates.append({ "path": path, "message": message })
+		self.queuedUpdates.append({ "path": path, "message": json.dumps(message) })
 	
 	def push_all(self, path, messages):
 		for message in messages:
@@ -139,7 +139,7 @@ class RootController(Controller):
 			path = None
 			message = ""
 			if "path" in update: path = update["path"]
-			if "message" in update: message = update["message"]
+			if "message" in update: message = json.loads(update["message"])
 			
 			if path: self.update(iq, Path(path), message)
 		

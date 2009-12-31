@@ -104,10 +104,19 @@ Roots.Source = SC.DataSource.extend(
     return this._reverse_map;
   },
   
+  url: function(){
+    return this.rootPath + "/" + this.firenze.getDoloresId();
+  },
+  
   // attach signal is 
-  startAttach: function(path) {
-    var url = this.rootPath + "/" + path + "?did=" + this.firenze.getDoloresId();
-    SC.Request.getUrl(url).json().notify(this, "didAttach", path).send();
+  startAttach: function(paths) {
+    var connect_messages = [];
+    for (var i = 0; i < paths.length; i++) {
+      connect_messages.push({ path: paths[i] + "/::attach" });
+    }
+    
+    var url = this.url();
+    SC.Request.putUrl(url).json().notify(this, "didAttach").send(connect_messages);
   },
   
   // oddly enough... no command for this yet. Huh.
@@ -116,9 +125,10 @@ Roots.Source = SC.DataSource.extend(
     
   },
   
-  didAttach: function(response, path){
+  didAttach: function(response){
     if (SC.ok(response)) {
-      this.receiveRecords(path, response.get("body"));
+      var res = response.get("body");
+      for (var i = 0; i < res.length; i++) this.receiveRecordFromFirenze(res[i]["path"], res[i]["message"]);
     }
   },
   
@@ -242,9 +252,6 @@ Roots.Source = SC.DataSource.extend(
     // if path doesn't exist, return NO because we cannot do anything.
     if (!path) return NO;
     
-    // create a request
-    var url = this.rootPath + "/" + path;
-    
     // get the hash
     var hash = store.readEditableDataHash(storeKey);
     
@@ -262,8 +269,8 @@ Roots.Source = SC.DataSource.extend(
     store.dataSourceDidComplete(storeKey, hash, hash.guid);
     
     // send request
-    SC.Request.putUrl(url).json().notify(this, "didCreateRecord", store, storeKey, path, store.recordTypeFor(storeKey), hash.guid)
-    .send([hash]); // send to server
+    SC.Request.putUrl(this.url()).json().notify(this, "didCreateRecord", store, storeKey, path, store.recordTypeFor(storeKey), hash.guid)
+    .send([{path: path, message: JSON.stringify(hash) }]); // send to server
     
     return YES ; // return YES if you handled the storeKey
   },
@@ -292,9 +299,6 @@ Roots.Source = SC.DataSource.extend(
     // if path doesn't exist, return NO because we cannot do anything.
     if (!path) return NO;
     
-    // create a request
-    var url = this.rootPath + "/" + path;
-    
     // get the hash
     var hash = store.readDataHash(storeKey);
     
@@ -302,8 +306,8 @@ Roots.Source = SC.DataSource.extend(
     store.dataSourceDidComplete(storeKey, hash);
     
     // send request
-    SC.Request.putUrl(url).json().notify(this, "didUpdateRecord", store, storeKey, path, store.recordTypeFor(storeKey), hash.guid)
-    .send([hash]); // send to server
+    SC.Request.putUrl(this.url()).json().notify(this, "didUpdateRecord", store, storeKey, path, store.recordTypeFor(storeKey), hash.guid)
+    .send([{path: path, message: JSON.stringify(hash)}]); // send to server
     
     return YES ; // return YES if you handled the storeKey
   },
@@ -332,9 +336,6 @@ Roots.Source = SC.DataSource.extend(
     // if path doesn't exist, return NO because we cannot do anything.
     if (!path) return NO;
     
-    // create a request
-    var url = this.rootPath + "/" + path;
-    
     // get the hash
     var hash = store.readDataHash(storeKey);
     
@@ -345,8 +346,8 @@ Roots.Source = SC.DataSource.extend(
     if (hash) hash.DELETE = YES;
     
     // send request
-    SC.Request.putUrl(url).json().notify(this, "didDestroyRecord", store, storeKey, path, store.recordTypeFor(storeKey), hash.guid)
-    .send([hash]); // send to server
+    SC.Request.putUrl(this.url()).json().notify(this, "didDestroyRecord", store, storeKey, path, store.recordTypeFor(storeKey), hash.guid)
+    .send([{path: path, message: JSON.stringify(hash)}]); // send to server
     
     return YES ; // return YES if you handled the storeKey
   },

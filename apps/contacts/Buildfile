@@ -1,1 +1,5 @@
-config :contacts, :required => [:sproutcore, :"sproutcore/animation", :forms, :pomona, :roots], :url_prefix => "/contacts/"
+config :contacts, :required => [:sproutcore, :"sproutcore/animation", :forms, :pomona, :roots]
+
+mode :production do
+	config :all, :url_prefix => "/contacts/"
+end
