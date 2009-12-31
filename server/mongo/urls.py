@@ -2,10 +2,11 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
 	# Here, we set up "servers" (logical servers, that is)
-	# Each server (groups and contacts) works with URLs like this:
-	# contacts/groups|contacts
+	# Each server is a Django-based Dudley server; that is, it receives requests
+	# in bulk as signals, and can return similar signals in the same request, or later
+	# by using the external Dobby server (making this a hybrid app).
 	
-	(r'^(?P<rtype>groups|contacts)$', 'contacts.views.records'),
+	(r'^(?P<did>[^\s]+)$', 'contacts.controller.contactsController'),
 	
 	# These should eventually be bundled into attach
 	#(r'^contacts/connect/(?P<uid>[^\s]+)$', "contacts.views.connect"),

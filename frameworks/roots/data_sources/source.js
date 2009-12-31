@@ -49,11 +49,11 @@ Roots.Source = SC.DataSource.extend(
       port: this.firenzePort,
       protocol: this.firenzeProtocol,
       requestAttachments: function(connections){
-        for (var i = 0; i < connections.length; i++) self.startAttach(connections[i]);
+        self.startAttach(connections);
       },
       
       requestDetachments: function(connections){
-        for (var i = 0; i < connections.length; i++) self.stopAttach(connections[i]);
+        self.stopAttach(connections);
       }
     });
     
