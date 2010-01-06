@@ -26,7 +26,7 @@ Contacts.contactsSortController = SC.ArrayController.create(
 	
 	_resort: function()
 	{
-		var keys = this._sortKeys, content = this.get("[]");
+		var sortkeys = this._sortKeys, content = this.get("[]");
 		
 		// return if no content
 		if (!content)
@@ -37,8 +37,12 @@ Contacts.contactsSortController = SC.ArrayController.create(
 		
 		var i, l;
 		// make a compare function
-		var compare = function(a, b, sorter)
+		var compare = function(a, b)
 		{
+		  a = a.get("attributes");
+		  b = b.get("attributes");
+		  
+		  var keys = sortkeys;
 			var l = keys.length;
 			for (i = 0; i< l; i++)
 			{
@@ -48,13 +52,13 @@ Contacts.contactsSortController = SC.ArrayController.create(
 				
 				if (k.reverse)
 				{
-					var t = aV;
-					aV = bV;
-					bV = t;
+  				if (aV < bV) return 1;
+  				else if (aV > bV) return -1;
 				}
-				
-				if (aV > bV) return 1;
-				else if (aV < bV) return -1;
+			  else {
+  				if (aV > bV) return 1;
+  				else if (aV < bV) return -1;
+			  }
 			}
 			return 0;
 		};

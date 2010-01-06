@@ -16,6 +16,7 @@ Contacts.groupsController = SC.ArrayController.create(SC.CollectionViewDelegate,
 	all: null,
 	selection: null,
 	_observingGroups: [],
+	orderBy: "name",
 	allDidChange: function(){
 	  if (!this.get("selection")) {
 	    this.set("effectiveSelection", this.get("all"));

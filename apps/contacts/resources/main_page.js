@@ -185,11 +185,11 @@ Contacts.mainPage = SC.Page.design({
 							},
 							
 							dragEntered: function(){
-								this.$().addClass("list-selection");
+								this.$().addClass("hback").addClass("list-selection");
 							},
 							
 							dragExited: function(drag, evt) {
-								if (!this.get("isSelected")) this.$().removeClass("list-selection");
+								if (!this.get("isSelected")) this.$().removeClass("hback").removeClass("list-selection");
 							},
 							
 							acceptDragOperation: function() { return YES; },
@@ -280,7 +280,7 @@ Contacts.mainPage = SC.Page.design({
 							
   						exampleView: SC.View.design({
   							childViews: "image label".w(),
-  							isCompanyBinding: "*content.isCompany",
+  							isCompanyBinding: ".content.isCompany",
   							classNames: ["contact-item"],
   							
   							image: SC.ImageView.design({

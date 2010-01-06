@@ -54,9 +54,10 @@ Contacts.contactSearchController = SC.ArrayController.create(
       var relevance = 0;
       var r_full_name = efull;
       if (search && search.trim() !== "" && terms.length > 0) {
-        var first = SC.RenderContext.escapeHTML(o.get("firstName"));
-        var last = SC.RenderContext.escapeHTML(o.get("lastName"));
-        var company = SC.RenderContext.escapeHTML(o.get("company"));
+        var attr = o.get("attributes");
+        var first = SC.RenderContext.escapeHTML(attr["firstName"]);
+        var last = SC.RenderContext.escapeHTML(attr["lastName"]);
+        var company = SC.RenderContext.escapeHTML(attr["company"]);
         
         // first name starts, +7
         // last name starts, +6
@@ -68,6 +69,18 @@ Contacts.contactSearchController = SC.ArrayController.create(
         // and we do this for each term.
         for (ti = 0; ti < tl; ti++) {
           var term = terms[ti];
+          
+          // terms in structure field:value
+          var s = term.split(":");
+          if (s.length > 1) {
+            // special action
+            var field = s[0], val = s[1];
+            var tfield = this._match_start(attr[field], val);
+            if (tfield) relevance += 9;
+            tfield = this._match_partial(attr[field], val);
+            if (tfield) relevance += 8;
+            continue;
+          }
           
           var tfirst = this._match_start(first, term);
           if (tfirst) relevance += 7;

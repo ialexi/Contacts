@@ -28,7 +28,7 @@ Contacts.ContactView = SC.View.extend(
 		editsByDefault: NO,
 		layout: { left: 20, top: 20, right: 20, bottom: 20 },
 		contentBinding: ".parentView.content",
-		fields: "name active company relationship address csz phone email".w(),
+		fields: "name refer active company salesperson relationship address csz phone email".w(),
 
 		name: Forms.FormView.row({
 			fields: 'firstName lastName'.w(),
@@ -39,12 +39,27 @@ Contacts.ContactView = SC.View.extend(
 
 			autoHide: YES
 		}),
+	  
+	  refer: Forms.FormView.row(SC.TextFieldView, {
+	    hint: "refer to as",
+	    fieldKey: "addressAs",
+	    fieldLabel: NO,
+	    
+	    autoHide: YES
+	  }),
 
 		company: Forms.FormView.row(SC.TextFieldView, {
-			//fieldLabel: NO, // I LIKE HINTS DARNIT
 			hint: "company",
 			fieldKey: "company",
 			fieldLabel: "company",
+
+			autoHide: YES
+		}),
+		
+		salesperson: Forms.FormView.row(SC.TextFieldView, {
+			hint: "salesperson",
+			fieldKey: "salesperson",
+			fieldLabel: "salesperson",
 
 			autoHide: YES
 		}),

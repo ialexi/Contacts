@@ -35,6 +35,8 @@ Contacts.Contact = SC.Record.extend(
 	
 	// it is a company? Yes no.
 	company: SC.Record.attr(String),
+	salesperson: SC.Record.attr(String),
+	addressAs: SC.Record.attr(String),
 	
 	address: SC.Record.attr(String),
 	city: SC.Record.attr(String),
