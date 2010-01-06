@@ -30,6 +30,8 @@ Roots.Source = SC.DataSource.extend(
   firenzePrefix: "comet/",
   firenzeProtocol: "http",
   
+  isConnected: NO,
+  
   /**
   The Url that everything in map is relative to. For instance, if this is
   "/contacts", a map to "groups" would create a url "/contacts/groups"
@@ -56,6 +58,8 @@ Roots.Source = SC.DataSource.extend(
         self.stopAttach(connections);
       }
     });
+    
+    this.bind("isConnected", [this.firenze, "isConnected"]);
     
     // later (lazily) we will create our reverse-map
     // this._reverse_map
@@ -231,7 +235,6 @@ Roots.Source = SC.DataSource.extend(
   retrieveRecord: function(store, storeKey) {
     // if we don't have it, it does not exist!
     // So, tell them!
-    console.error("RETRIEVE!");
     var hash = {
       guid: store.idFor(storeKey),
       DELETE: true

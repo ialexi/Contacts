@@ -12,7 +12,39 @@ Contacts.mainPage = SC.Page.design({
 	// Add childViews to this pane for views to display immediately on page 
 	// load.
 	mainPane: SC.MainPane.design({
-		childViews: 'toolbar splitter'.w(),
+	  classNames: ["unfocus"], // default horizontal repeat images to unfocus state
+		childViews: 'toolbar splitter connecting'.w(),
+		connecting: SC.View.design(SC.Animatable, {
+		  classNames: "overlay".w(),
+		  childViews: "connecting".w(),
+		  
+		  transitions: {
+		    opacity: 0.125,
+		    display: 0.25
+		  },
+		  
+		  connecting: SC.LabelView.design({
+		    classNames: "connecting".w(),
+		    "layout": {centerX: 0, centerY: 0, width: 200, height:24},
+		    "value": "Connecting..."
+		  }),
+		  
+		  backgroundColor: "black",
+		  style: { opacity: 0.0, display:"none" },
+		  layout: { left:0, right:0, bottom:0, top:0 },
+		  
+		  shouldHide: null,
+		  shouldHideBinding: "Contacts.store.isConnected",
+		  shouldHideDidChange: function(){
+		    // shouldHide being undefined means it should not hide.
+		    if (this.get("shouldHide") || SC.none(this.get("shouldHide"))) {
+		      this.adjust("opacity", 0).adjust("display", "none");
+		    } else {
+		      this.adjust("opacity", 0.7).adjust("display", "block");
+		    }
+		  }.observes("shouldHide")
+		}),
+		
 		toolbar: SC.ToolbarView.design({
 			classNames: ["hback", "toolbar"],
 			layout: { left: 0, top: 0, right: 0, height: 32 },
@@ -44,6 +76,13 @@ Contacts.mainPage = SC.Page.design({
 				classNames: "groups".w(),
 				
 				allGroup: SC.View.design({
+				  init: function() {
+			      Contacts.appController.set("allGroup", this);
+				    sc_super();
+				    
+				    this.becomeFirstResponder();
+				  },
+				  
 				  childViews: "label separator".w(),
 				  layout: { left: 0, right: 0, top: 0, height: 32 },
 				  
@@ -54,10 +93,28 @@ Contacts.mainPage = SC.Page.design({
 				    if (this.get("selected")) context.addClass("hback list-big-selection selected");
 				  },
 				  
+				  acceptsFirstResponder: YES,
 				  click: function() {
-				    Contacts.groupsController.selectAllGroup();
+				    this.becomeFirstResponder();
 				    return YES;
 				  },
+				  
+				  becomeFirstResponder: function() {
+				    Contacts.groupsController.selectAllGroup();
+				    sc_super();
+				  },
+				  
+				  keyDown: function(e) {
+					  if (e.keyCode == 39) {
+					    // right arrow
+					    Contacts.appController.focusContactsList();
+					    return YES;
+					  } else if (e.keyCode == 40) {
+				      Contacts.appController.selectFirstGroup();
+				      return YES;
+					  }
+					  return NO;
+					},
 				  
 				  label: SC.LabelView.design({
 				    layout: { height: 18, centerY: 0, left: 10, right: 10 },
@@ -75,13 +132,33 @@ Contacts.mainPage = SC.Page.design({
 					borderStyle: SC.BORDER_NONE,
 					hasHorizontalScroller: NO,
 					contentView: SC.ListView.design({
+					  init: function() {
+  				    sc_super();
+  				    Contacts.appController.set("groupsList", this);
+  				  },
+  				  
 						contentBinding: "Contacts.groupsController.arrangedObjects",
 						selectionBinding: "Contacts.groupsController.selection",
 						delegate: Contacts.groupDropController,
 						contentValueKey: "name",
 						canEditContent: YES,
 						canDeleteContent: YES,
-						rowHeight:24,
+						rowHeight:22,
+						
+						keyDown: function(e) {
+						  if (e.keyCode == 39) {
+						    // right arrow
+						    Contacts.appController.focusContactsList();
+						    return YES;
+						  } else if (e.keyCode == 38) {
+						    if (Contacts.groupsController.get("selection").containsObject(Contacts.groupsController.objectAt(0))) {
+						      Contacts.appController.focusAllGroup();
+						      return YES;
+						    }
+						  }
+						  return sc_super();
+						},
+						
 						exampleView: SC.View.design({
 							childViews: "label".w(),
 							label: SC.LabelView.design({
@@ -108,11 +185,11 @@ Contacts.mainPage = SC.Page.design({
 							},
 							
 							dragEntered: function(){
-								this.$().addClass("drag-potential");
+								this.$().addClass("list-selection");
 							},
 							
 							dragExited: function(drag, evt) {
-								this.$().removeClass("drag-potential");
+								if (!this.get("isSelected")) this.$().removeClass("list-selection");
 							},
 							
 							acceptDragOperation: function() { return YES; },
@@ -126,7 +203,7 @@ Contacts.mainPage = SC.Page.design({
 								sc_super();
 								if (this.contentIndex % 2 === 0) context.addClass("even");
 								else context.addClass("odd");
-								if (this.get("isSelected")) context.addClass("hback").addClass("list-big-selection").addClass("selected");
+								if (this.get("isSelected")) context.addClass("hback").addClass("list-selection").addClass("selected");
 							}
 						})
 					})
@@ -142,8 +219,8 @@ Contacts.mainPage = SC.Page.design({
 						icon: "icons plus button-icon",
 						titleMinWidth: 16,
 						isActiveDidChange: function() {
-						  this.set("icon", (this.get("isActive") ? "icons plus-active button-icon" : "icons plus button-icon"));
-						  this.displayDidChange();
+						  this.$("img").removeClass("plus-active").removeClass("plus");
+						  this.$("img").addClass(this.get("isActive") ? "plus-active" : "plus");
 						}.observes("isActive")
 					})
 				})
@@ -166,8 +243,8 @@ Contacts.mainPage = SC.Page.design({
   						icon: "icons plus button-icon",
   						titleMinWidth: 16,
   						isActiveDidChange: function() {
-  						  this.set("icon", (this.get("isActive") ? "icons plus-active button-icon" : "icons plus button-icon"));
-						    this.displayDidChange();
+  						  this.$("img").removeClass("plus-active").removeClass("plus");
+  						  this.$("img").addClass(this.get("isActive") ? "plus-active" : "plus");
   						}.observes("isActive")
   					})
 					}),
@@ -176,6 +253,21 @@ Contacts.mainPage = SC.Page.design({
 						layout: { left:0, right:0, top:0, bottom:32},
 						borderStyle: SC.BORDER_NONE,
 						contentView: SC.ListView.design({
+						  init: function() {
+						    Contacts.appController.set("contactsList", this);
+						    sc_super();
+						  },
+						  
+						  keyDown: function(e) {
+  						  if (e.keyCode == 37) {
+  						    // right arrow
+  						    Contacts.appController.focusGroupsList();
+  						    return YES;
+  						  }
+  						  
+  						  return sc_super();
+  						},
+						  
 							contentBinding: "Contacts.contactsController.arrangedObjects",
 							selectionBinding: "Contacts.contactsController.selection",
 							contentValueKey: "searchFullName",

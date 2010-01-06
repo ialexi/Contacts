@@ -1,3 +1,5 @@
-.hback .list-big-selection, .hback.list-big-selection { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -0px; }
-.hback .list-selection, .hback.list-selection { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -32px; }
-.hback .toolbar, .hback.toolbar { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -54px; }
+.hback .focus.list-big-selection, .focus.list-big-selection.hback { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -0px; }
+.hback .list-big-selection, .list-big-selection.hback { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -32px; }
+.hback .list-selection, .list-selection.hback { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -64px; }
+.hback .sc-view.focus .list-selection, .sc-view.focus .list-selection.hback { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -86px; }
+.hback .toolbar, .toolbar.hback { background:static_url('images/hback/sprites.png') repeat-x; background-position:-0px -108px; }

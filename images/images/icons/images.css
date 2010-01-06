@@ -1,5 +1,5 @@
-.icons .company, .icons.company { background:static_url('images/icons/sprites.png') no-repeat; background-position:-0px -0px; }
-.icons .person, .icons.person { background:static_url('images/icons/sprites.png') no-repeat; background-position:-16px -0px; }
-.icons .plus-active, .icons.plus-active { background:static_url('images/icons/sprites.png') no-repeat; background-position:-32px -0px; }
-.icons .plus, .icons.plus { background:static_url('images/icons/sprites.png') no-repeat; background-position:-48px -0px; }
-.icons .search-16, .icons.search-16 { background:static_url('images/icons/sprites.png') no-repeat; background-position:-64px -0px; }
+.icons .company, .company.icons { background:static_url('images/icons/sprites.png') no-repeat; background-position:-0px -0px; }
+.icons .person, .person.icons { background:static_url('images/icons/sprites.png') no-repeat; background-position:-16px -0px; }
+.icons .plus-active, .plus-active.icons { background:static_url('images/icons/sprites.png') no-repeat; background-position:-32px -0px; }
+.icons .plus, .plus.icons { background:static_url('images/icons/sprites.png') no-repeat; background-position:-48px -0px; }
+.icons .search-16, .search-16.icons { background:static_url('images/icons/sprites.png') no-repeat; background-position:-64px -0px; }

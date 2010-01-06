@@ -31,6 +31,7 @@ Roots.Store = SC.Store.extend(
       map: this.map,
       rootPath: this.rootPath
     }));
+    this.bind("isConnected", [this.get("dataSource"), "isConnected"]);
   }
   
 }) ;
