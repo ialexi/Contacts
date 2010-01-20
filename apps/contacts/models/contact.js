@@ -37,6 +37,7 @@ Contacts.Contact = SC.Record.extend(
 	company: SC.Record.attr(String),
 	salesperson: SC.Record.attr(String),
 	addressAs: SC.Record.attr(String),
+	isCustomer: SC.Record.attr(Boolean),
 	
 	address: SC.Record.attr(String),
 	city: SC.Record.attr(String),

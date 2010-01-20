@@ -5,6 +5,149 @@
 /*globals Contacts Animate */
 require("views/contact");
 
+SC.PoolableClass = {
+  isPooled: YES,
+  
+  _objectPool: [],
+  maxPoolSize: 100,
+  
+  _pool_default_concat_values: {}, // default values for concatenated properties
+  
+  create: function() {
+    // first, check pool
+    var object;
+    if (this._objectPool.length > 0) {
+      object = this._objectPool.pop();
+      
+      // wake from pool
+      object.poolManager = this;
+      object.mixin(this._pool_default_concat_values);
+      if (object.wakeFromPool) object.wakeFromPool(arguments);
+    } else {
+      object = this._no_pool_create.apply(this, arguments);
+      object.poolManager = this;
+    }
+    
+    // and return
+    return object;
+  },
+  
+  returnToPool: function(object) {
+    if (this._objectPool.length >= this.maxPoolSize) return NO;
+    this._objectPool.push(object);
+    if (object.returnToPool) object.returnToPool();
+    return YES;
+  }
+};
+
+SC.PoolableMixin = {
+  /**
+  Poolable objects are only destroyed if they cannot be added to the pool.
+  */
+  destroy: function() {
+    // remove from parent if found
+    if (!this.disableRemoveOnDestroy) this.removeFromParent() ;
+    this.destroyLayer();
+  
+    // unregister for drags
+    if (this.get('isDropTarget')) SC.Drag.removeDropTarget(this) ;
+  
+    // unregister for autoscroll during drags
+    if (this.get('isScrollable')) SC.Drag.removeScrollableView(this) ;
+  
+    if (this.poolManager) if (this.poolManager.returnToPool(this)) return;
+    return this._no_pool_destroy();
+  },
+
+  wakeFromPool: function(args) {
+    this.beginPropertyChanges();
+    var concat = this.concatenatedProperties;
+    for (var idx = 0; idx < args.length; idx++) {
+      var o = args[idx];
+      for (var i in o) {
+        var v = o[i];
+        
+        // handle concatenated
+        if (concat.indexOf(i) >= 0) {
+          if (!(v instanceof Array)) v = SC.$A(v);
+          v = SC.$A(this.get(i, o[i])).concat(v);
+        }
+        
+        // and now set
+        this.set(i, v);
+      }
+    }
+    this.endPropertyChanges();
+  }
+};
+
+SC.makePooled = function(objectType, firstInstance) {
+  // get concatenated properties
+  var concat_defaults = {};
+  
+  var c = objectType.prototype.concatenatedProperties;
+  for (var i = 0; i < c.length; i++) {
+    concat_defaults[c[i]] = objectType.prototype[c[i]];
+  }
+  objectType._pool_default_concat_values = concat_defaults;
+  
+  // do mixing in
+  objectType._no_pool_create = objectType.create;
+  SC.mixin(objectType, SC.PoolableClass);
+  objectType.prototype._no_pool_destroy = objectType.prototype.destroy;
+  SC.mixin(objectType.prototype, SC.PoolableMixin);
+};
+
+Contacts.ContactItemView = SC.View.design({
+	childViews: "image label".w(),
+	isCompanyBinding: "*content.isCompany",
+	classNames: ["contact-item"],
+	
+	image: SC.ImageView.design({
+	  layout: {left:5, width:16, height: 16, centerY:0},
+	  value: ""
+	}),
+	
+	label: SC.LabelView.design({
+	  escapeHTML: NO,
+		layout: {left:28, right:10, height:18,centerY:0},
+		contentBinding: ".parentView.content",
+		contentValueKey: "searchFullName",
+		inlineEditorDidEndEditing: function(){ 
+			sc_super();
+			Contacts.store.commitRecords();
+		}
+	}),
+	
+	isSelected: NO,
+	isSelectedDidChange: function()
+	{
+		this.displayDidChange();
+	}.observes("isSelected"),
+	isCompanyDidChange: function() {
+		// is company (for the icon)
+		if (this.get("isCompany")) {
+		  this.image.set("value", "icons company");
+	  } else {
+	    this.image.set("value", "icons person");
+	  }
+	}.observes("isCompany"),
+	
+	
+	render: function(context) {
+		sc_super();
+		
+		// even/odd
+		if (this.contentIndex % 2 === 0) context.addClass("even");
+		else context.addClass("odd");
+		
+		// is selected
+		if (this.get("isSelected")) context.addClass("list-selection").addClass("hback").addClass("selected");
+	}
+});
+
+SC.makePooled(Contacts.ContactItemView);
+
 // This page describes the main user interface for your application.  
 Contacts.mainPage = SC.Page.design({
 
@@ -278,53 +421,7 @@ Contacts.mainPage = SC.Page.design({
 							canDeleteContent: YES,
 							rowHeight: 22,
 							
-  						exampleView: SC.View.design({
-  							childViews: "image label".w(),
-  							isCompanyBinding: ".content.isCompany",
-  							classNames: ["contact-item"],
-  							
-  							image: SC.ImageView.design({
-  							  layout: {left:5, width:16, height: 16, centerY:0},
-  							  value: ""
-  							}),
-  							
-  							label: SC.LabelView.design({
-  							  escapeHTML: NO,
-  								layout: {left:28, right:10, height:18,centerY:0},
-  								contentBinding: ".parentView.content",
-  								contentValueKey: "searchFullName",
-  								inlineEditorDidEndEditing: function(){ 
-  									sc_super();
-  									Contacts.store.commitRecords();
-  								}
-  							}),
-  							
-  							isSelected: NO,
-  							isSelectedDidChange: function()
-  							{
-  								this.displayDidChange();
-  							}.observes("isSelected"),
-  							isCompanyDidChange: function() {
-  								// is company (for the icon)
-  								if (this.get("isCompany")) {
-  								  this.image.set("value", "icons company");
-								  } else {
-								    this.image.set("value", "icons person");
-								  }
-  							}.observes("isCompany"),
-  							
-  							
-  							render: function(context) {
-  								sc_super();
-  								
-  								// even/odd
-  								if (this.contentIndex % 2 === 0) context.addClass("even");
-  								else context.addClass("odd");
-  								
-  								// is selected
-  								if (this.get("isSelected")) context.addClass("list-selection").addClass("hback").addClass("selected");
-  							}
-  						})
+  						exampleView: Contacts.ContactItemView
 						})
 					})
 				}),

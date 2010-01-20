@@ -46,6 +46,7 @@ Contacts.contactSearchController = SC.ArrayController.create(
     var terms = search.split(" "), tl = terms.length, ti = 0;
     
     var c = this, l = c.get("length"), o;
+    var store = Contacts.store;
     for (var i = 0; i < l; i++) {
       o = c.objectAt(i);
       
@@ -54,7 +55,7 @@ Contacts.contactSearchController = SC.ArrayController.create(
       var relevance = 0;
       var r_full_name = efull;
       if (search && search.trim() !== "" && terms.length > 0) {
-        var attr = o.get("attributes");
+        var attr = store.readDataHash(o.storeKey);
         var first = SC.RenderContext.escapeHTML(attr["firstName"]);
         var last = SC.RenderContext.escapeHTML(attr["lastName"]);
         var company = SC.RenderContext.escapeHTML(attr["company"]);
@@ -110,10 +111,17 @@ Contacts.contactSearchController = SC.ArrayController.create(
         }
 
       }
-
-      o.set("searchFullName", r_full_name);
-      o.set("searchRelevance", relevance);
-      if (relevance > 0 || search.trim() === "" || terms.length === 0) result.push(o)
+      
+      if (relevance > 0 || search.trim() === "" || terms.length === 0) {
+        // only update things we actually show.
+        o.beginPropertyChanges();
+        o.set("searchFullName", r_full_name);
+        o.set("searchRelevance", relevance);
+        o.endPropertyChanges();
+        
+        // and show them :)
+        result.push(o); 
+      }
     }
     
     this.set("searchContent", result);

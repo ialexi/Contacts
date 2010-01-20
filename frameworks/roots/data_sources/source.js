@@ -358,8 +358,8 @@ Roots.Source = SC.DataSource.extend(
   didDestroyRecord: function(response, store, storeKey, path, recordType, id) {
     // we get an update, and that's all we need (assuming stuff worked)
     if (SC.ok(response)) {
-      var result = response.get("body");
-      this.receiveRecords(path, result); // receive the records!!!!
+      // var result = response.get("body");
+      // this.receiveRecords(path, result); // receive the records!!!!
     }
     // if it didn't, well, we have the store key so we can mark error
     else {

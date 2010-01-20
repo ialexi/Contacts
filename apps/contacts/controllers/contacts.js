@@ -62,6 +62,10 @@ Contacts.contactsController = SC.ArrayController.create(SC.CollectionViewDelegat
 	    return;
 	  }
 	  
+	  this.startDeletingContacts(indexes, records);
+	},
+	
+	startDeletingContacts: function(indexes, records) {
 	  // process OUR WAY!
 	  this._pendingOperation = { action: "deleteContacts", records: records, indexes: indexes  };
 	  

@@ -36,11 +36,14 @@ Contacts.contactsSortController = SC.ArrayController.create(
 		}
 		
 		var i, l;
+		
+		// going to go directly to the source for performance.
+		var store = Contacts.store;
 		// make a compare function
 		var compare = function(a, b)
 		{
-		  a = a.get("attributes");
-		  b = b.get("attributes");
+		  a = store.readDataHash(a.storeKey);
+		  b = store.readDataHash(b.storeKey);
 		  
 		  var keys = sortkeys;
 			var l = keys.length;

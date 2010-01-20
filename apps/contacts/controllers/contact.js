@@ -33,5 +33,12 @@ Contacts.contactController = SC.ObjectController.create(
 		this.set("isEditing", NO);
 		Contacts.mainPage.getPath("mainPane.splitter.bottomRightView.bottomRightView.contactView.contentView.form").commitEditing();
 		Contacts.store.commitRecords();
+	},
+	
+	deleteContact: function() {
+	  Contacts.contactsController.startDeletingContacts(
+	    Contacts.contactsController.get("selection"),
+	    SC.Set.create([this.get("content")])
+	  );
 	}
 }) ;

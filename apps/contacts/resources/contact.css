@@ -1,6 +1,11 @@
 /* Row */
 .sc-form-row-view { overflow:visible; } /* for editing shadows */
 
+/* Delete Button */
+.contact-view .delete .sc-button-view {
+  background: red;
+  margin-top:10px;
+}
 
 /* Text Field View */
 .contact-view .sc-text-field-view .border {
@@ -42,7 +47,6 @@
 
 .safari .contact-view .sc-view .sc-text-field-view.focus {outline:0px none;}
 .mozilla .contact-view .sc-view .sc-text-field-view.focus {outline:0px none;}
-
 
 /* Set font size */
 .sc-view .sc-text-field-view .padding

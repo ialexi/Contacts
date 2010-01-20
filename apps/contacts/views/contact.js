@@ -28,14 +28,21 @@ Contacts.ContactView = SC.View.extend(
 		editsByDefault: NO,
 		layout: { left: 20, top: 20, right: 20, bottom: 20 },
 		contentBinding: ".parentView.content",
-		fields: "name refer active company salesperson relationship address csz phone email".w(),
+		fields: "name refer isCustomer company position phone email address csz salesperson".w(),
 
 		name: Forms.FormView.row({
-			fields: 'firstName lastName'.w(),
+			fields: 'firstName lastName del'.w(),
 			fieldLabel: NO,
 			// and I kinda should test fieldLabel: NO
 			firstName: Forms.FormView.field(SC.TextFieldView, { stealsFocus: YES, hint: "first", classNames: ["name"], layout: { height: 35, width: 200 } }),
 			lastName: Forms.FormView.field(SC.TextFieldView, { hint: "last", classNames: ["name"], layout: { height: 35, width: 200 } }),
+			del: Forms.FormView.field(SC.ButtonView, {
+			  classNames: ["delete"],
+			  layout: { height:24, width: 120 },
+			  title: "Delete Contact",
+			  target: Contacts.contactController,
+			  action: "deleteContact"
+			}),
 
 			autoHide: YES
 		}),
@@ -102,27 +109,19 @@ Contacts.ContactView = SC.View.extend(
 			autoHide: YES
 		}),
 
-		active: Forms.FormView.row(SC.CheckboxView, {
-			title: "Active",
+		isCustomer: Forms.FormView.row(SC.CheckboxView, {
+			title: "Customer",
 			fieldLabel: NO,
-			fieldKey: "active",
+			fieldKey: "isCustomer",
 
-			emptyValues: [YES],
-			autoHide: YES,
+			autoHide: NO,
 			value: YES
 		}),
-
-		relationship: Forms.FormView.row(SC.RadioView, {
-			items: [ 
-			{ value: "customer", title: "Customer" },
-			{ value: "former-customer", title: "Former Customer" },
-			{ value: "friend", title: "Friend" },
-			{ value: "enemy", title: "Enemy" }
-			],
-			itemValueKey: "value",
-			itemTitleKey: "title",
-			fieldKey: "relationship",
-			fieldLabel: "relationship",
+		
+		position: Forms.FormView.row(SC.TextFieldView, {
+			hint: "position",
+			fieldKey: "position",
+			fieldLabel: "position",
 			autoHide: YES
 		}),
 

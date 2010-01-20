@@ -1,13 +1,13 @@
 /* Loading Screen */
 @-webkit-keyframes loading-animate {
   0% {
-    -webkit-transform: rotate(-10deg);
+    opacity: .5;
   }
   50% {
-    -webkit-transform: rotate(10deg);
+    opacity: 1;;
   }
   100% {
-    -webkit-transform: rotate(-10deg);
+    opacity: .5;
   }
 }
 
@@ -49,8 +49,10 @@
 /* Toolbars */
 .toolbar {
 	z-index:500;
-	border-left:1px solid #888;
-	-webkit-box-shadow: none;
+	border-left:1px solid #bbb;
+	border-bottom:1px solid #bbb;
+	border-top: 1px solid #bbb;
+	-webkit-box-shadow: 0px 0px 5px rgba(0,0,0,.5);
 }
 
 
@@ -61,7 +63,7 @@
 /* Toolbar Buttons—normal */
 .toolbar .sc-button-view.sc-regular-size.square { 
 	max-height: none; background: transparent;
-	border-right:1px solid #888;
+	border-right:1px solid #bbb;
 	text-shadow: 1px 1px 1px white;
 }
 .toolbar .sc-button-view.sc-regular-size.square .sc-button-inner {
@@ -99,7 +101,7 @@
 	color:black;
 }
 
-.sc-split-divider-view { background-color:#999;}
+.sc-split-divider-view { background-color:#bbb;}
 .sc-split-divider-view { border:0px none; }
 
 .contacts-list .contact-item { overflow:visible; }
@@ -113,8 +115,19 @@
   /* Add a different background image */
 }
 
-.contacts-list .selected {
+
+.groups .selected, .contacts-list .selected {
 	color:white;
+	border: 0px none;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #444;
+}
+
+.focus.groups .selected, .focus.contacts-list .selected {
+	color:white;
+	border: 0px none;
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #333;
 }
 
 /* Search */
@@ -148,7 +161,7 @@
 
 /* Groups */
 .groups {
-  background-color: #cad0dd;
+  background-color: #d0dae3;
   color:#444455;
 	font-weight:bold;
 	text-shadow: 0px 1px 1px white;
